@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Created by PhpStorm.
  * User: Zhengyk11
@@ -6,6 +6,8 @@
  * Time: 0:08
  */
 include 'list.php';
+$con = mysql_connect("localhost","root","miniserver");
+mysql_select_db("my_db", $con);
 
 function curl_get($url)
 {
@@ -50,11 +52,11 @@ function rand_music()
 
 function get_music_id()
 {
-    $played = isset($_COOKIE["played"]) ? json_decode($_COOKIE["played"]) : null;
+    $played = isset($_COOKIE["played"]) ? json_decode(str_replace("\\", "", $_COOKIE["played"])) : null;
     $id = rand_music();
-    if ($played != null) {
-        global $player_list;
-        $sum = count($player_list);
+		global $player_list;
+		$sum = count($player_list);
+    if ($played != null && $sum >= 4) {
         if ($sum >= 2) {
             $sum = $sum * 0.5;
         } else {
@@ -67,20 +69,39 @@ function get_music_id()
             array_shift($played);
         }
     }
-    $played[] = $id;
+		if (!in_array($id, $played)){
+				$played[] = $id;
+		}
     setcookie("played", json_encode($played), time() + 3600);
     return $id;
 }
 
-foreach ($playlist_list as $key) {
-    $json = get_playlist_info($key);
-    $arr = json_decode($json, true);
-    foreach ($arr["result"]["tracks"] as $key2) {
-        $id = $key2["id"];
-        if (!in_array($id, $player_list)) {
-            $player_list[] = $id;
-        }
-    }
+if (isset($_GET["search"])){
+		$search = $_GET['search'];
+		$player_list = array();
+		$player_list[] = "40147552";
+		setcookie("playlist", json_encode($player_list), time() + 3600);
+}
+else{
+		if (isset($_COOKIE["playlist"])){
+			 $player_list = json_decode(str_replace("\\", "", $_COOKIE["playlist"]));
+			 /* $f = fopen("c:/users/jie/desktop/log.txt","w");
+				fwrite($f,var_export($player_list,true));
+				fclose($f); */
+		}
+		else{
+				foreach ($playlist_list as $key) {
+					$json = get_playlist_info($key);
+					$arr = json_decode($json, true);
+					foreach ($arr["result"]["tracks"] as $key2) {
+							$id = $key2["id"];
+							if (!in_array($id, $player_list)) {
+									$player_list[] = strval($id);
+							}
+					}
+				}
+				setcookie("playlist", json_encode($player_list), time() + 3600);
+		}
 }
 
 //获取数据
@@ -88,40 +109,52 @@ $id = get_music_id();
 $music_info = json_decode(get_music_info($id), true);
 $lrc_info = json_decode(get_music_lyric($id), true);
 
+//数据库处理
+#mysql_query("INSERT INTO Persons (FirstName, LastName, Age) VALUES ('Peter', 'Griffin', '35')");
+
+/* $result = mysql_query("SELECT * FROM Persons");
+while($row = mysql_fetch_array($result)){
+  echo $row['FirstName'] . " " . $row['LastName'];
+  echo "<br />";
+} */
+
+#mysql_query("UPDATE Persons SET Age = '36' WHERE FirstName = 'Peter' AND LastName = 'Griffin'");
+
 //处理音乐信息
 $play_info["cover"] = $music_info["songs"][0]["album"]["picUrl"];
 $play_info["mp3"] = $music_info["songs"][0]["mp3Url"];
 $play_info["mp3"] = str_replace("http://m", "http://p", $play_info["mp3"]);
 $play_info["music_name"] = $music_info["songs"][0]["name"];
 foreach ($music_info["songs"][0]["artists"] as $key) {
-    if (!isset($play_info["artists"])) {
-        $play_info["artists"] = $key["name"];
-    } else {
-        $play_info["artists"] .= "," . $key["name"];
-    }
+		if (!isset($play_info["artists"])) {
+				$play_info["artists"] = $key["name"];
+		} else {
+				$play_info["artists"] .= "," . $key["name"];
+		}
 }
 
 //处理歌词
 if (isset($lrc_info["lrc"]["lyric"])) {
-    $lrc = explode("\n", $lrc_info["lrc"]["lyric"]);
-    array_pop($lrc);
-    foreach ($lrc as $rows) {
-        $row = explode("]", $rows);
-        if (count($row) == 1) {
-            $play_info["lrc"] = "no";
-            break;
-        } else {
-            $lyric = array();
-            $col_text = end($row);
-            array_pop($row);
-            foreach ($row as $key) {
-                $time = explode(":", substr($key, 1));
-                $time = $time[0] * 60 + $time[1];
-                $play_info["lrc"][$time] = $col_text;
-            }
-        }
-    }
+		$lrc = explode("\n", $lrc_info["lrc"]["lyric"]);
+		array_pop($lrc);
+		foreach ($lrc as $rows) {
+				$row = explode("]", $rows);
+				if (count($row) == 1) {
+						$play_info["lrc"] = "no";
+						break;
+				} else {
+						$lyric = array();
+						$col_text = end($row);
+						array_pop($row);
+						foreach ($row as $key) {
+								$time = explode(":", substr($key, 1));
+								$time = $time[0] * 60 + $time[1];
+								$play_info["lrc"][$time] = $col_text;
+						}
+				}
+		}
 } else {
-    $play_info["lrc"] = "no";
+		$play_info["lrc"] = "no";
 }
 echo json_encode($play_info);
+mysql_close($con);

@@ -4,9 +4,20 @@
     <meta charset="utf-8">
     <title>SOA Music</title>
     <link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/speech-input.css">
+		<link rel="stylesheet" href="css/gh-buttons.css">
 </head>
 <body>
 <div class="back">
+		<div class="si-wrapper">
+			<input type="text" id="t_input" class="si-input" placeholder="">
+			<button class="si-btn">
+				speech input
+				<span class="si-mic"></span>
+				<span class="si-holder"></span>
+			</button>
+		</div>
+		<a id="s_button" class="button icon search" style="left:690px;top:20px" href="javascript:search()">Search</a>
     <div class="container">
         <div class="player">
             <div id="cd" class="cd">
@@ -32,6 +43,7 @@
 </div>
 <audio id="player">
 </audio>
+<script src="js/speech-input.js"></script>
 <script src="js/jquery-1.11.1.min.js" type="text/javascript"></script>
 <script src="js/player.js" type="text/javascript"></script>
 </body>
