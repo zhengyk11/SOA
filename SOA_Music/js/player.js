@@ -114,8 +114,8 @@ function display_lrc() {
 
 function search() {
 		if (input.val() != ""){
-			input.val("")
 			$.get("player.php?search=" + input.val(), function (data) {
+					input.val("")
 					mp3_info = JSON.parse(data);
 					$("#player").attr("src", mp3_info.mp3);
 					album.css("background-image", "url('" + mp3_info.cover + "')");

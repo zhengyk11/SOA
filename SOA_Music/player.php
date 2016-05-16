@@ -76,8 +76,31 @@ function get_music_id()
     return $id;
 }
 
+function split_word($input) {
+
+    $ch = curl_init();
+    $url = 'http://apis.baidu.com/apistore/pullword/words?source=';
+    $mode = '&param1=0.8&param2=0';
+    $header = array(
+        'apikey:e9efbd5ac9db0c055b973011482a4418',
+    );
+
+    // 添加apikey到header
+    curl_setopt($ch, CURLOPT_HTTPHEADER  , $header);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    // 执行HTTP请求
+    curl_setopt($ch , CURLOPT_URL , $url . $input . $mode );
+    $res = curl_exec($ch);
+
+    return $res;
+    //return json_encode($res);
+}
+
 if (isset($_GET["search"])){
-		$search = $_GET['search'];
+		$res = split("\r\n",split_word($_GET['search']));
+		$f = fopen("c:/users/jie/desktop/log.txt","w");
+		fwrite($f,var_export($res,true));
+		fclose($f);
 		$player_list = array();
 		$player_list[] = "40147552";
 		setcookie("playlist", json_encode($player_list), time() + 3600);
