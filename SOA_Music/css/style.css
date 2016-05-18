@@ -1,45 +1,9 @@
-
-html, body, body div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, figure, footer, header, menu, nav, section, time, mark, audio, video, details, summary {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font-size: 100%;
-    font-weight: normal;
-    vertical-align: baseline;
-    background: transparent;
-}
-
-article, aside, figure, footer, header, nav, section, details, summary {
-    display: block;
-}
-
 /* Handle box-sizing while better addressing child elements:
    http://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/ */
 html {
     box-sizing: border-box;
 }
-
-*,
-*:before,
-*:after {
-    box-sizing: inherit;
-}
-
-/* consider resetting the default cursor: https://gist.github.com/murtaugh/5247154 */
-
-/* Responsive images and other embedded objects
-   Note: keeping IMG here will cause problems if you're using foreground images as sprites.
-   If this default setting for images is causing issues, you might want to replace it with a .responsive class instead. */
-img,
-object,
-embed {
-    max-width: 100%;
-}
-
-/* force a vertical scrollbar to prevent a jumpy page */
-html {
-    overflow-y: scroll;
-}
+	
 
 /* we use a lot of ULs that aren't bulleted.
 	don't forget to restore the bullets within content. */
@@ -221,26 +185,20 @@ input[type=button] {
 html, body {
     width: 100%;
     height: 100%;
-    overflow-y: hidden;
     font-family: Helvetica, Tahoma, Arial, STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑", SimSun, "宋体", Heiti, "黑体", sans-serif;
+		overflow-y:hidden;
 }
 
-.back {
-    background: url('../images/bgimg.jpg') no-repeat right;
-    background-size: auto 100%;
-    width: 100%;
-    height: 100%;
-}
 
-.container {
+.container1 {
     position: fixed;
     top: 50%;
-    left: 50%;
-    width: 100%;
+    left: 25%;
+    width: 75%;
     height: 70%;
 }
 
-.player {
+.player1 {
     position: absolute;
     top: -50%;
     left: -50%;
@@ -320,14 +278,14 @@ html, body {
     -webkit-animation-timing-function: linear;
 }
 
-.action {
+.action1 {
     margin-top: 1.022%;
     margin-bottom: 0.222%;
     height: 2.5%;
     text-align: center;
 }
 
-.action img {
+.action1 img {
     height: 100%;
     width: 1.75vh;
 }
