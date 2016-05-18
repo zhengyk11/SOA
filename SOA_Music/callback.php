@@ -5,7 +5,7 @@ include_once( 'config.php' );
 include_once( 'saetv2.ex.class.php' );
 
 $o = new SaeTOAuthV2( WB_AKEY , WB_SKEY );
-$c = new SaeTClientV2( WB_AKEY , WB_SKEY , $_SESSION['token']['access_token'] );
+
 date_default_timezone_set('Asia/Shanghai');
 
 if (isset($_REQUEST['code'])) {
@@ -21,8 +21,8 @@ if (isset($_REQUEST['code'])) {
 if ($token) {
 	$_SESSION['token'] = $token;
 	setcookie( 'weibojs_'.$o->client_id, http_build_query($token) );
-	
-	$con = new mysqli("localhost","root","miniserver","my_db");
+	$c = new SaeTClientV2( WB_AKEY , WB_SKEY , $_SESSION['token']['access_token'] );
+	$con = new mysqli("localhost","root","","my_db");
 	// 检测连接
     if ($con->connect_error) {
         die("Connection failed: " . $con->connect_error);
@@ -58,12 +58,10 @@ mysql_query($sql,$con);*/
 	fwrite($f,var_export('20'.date('y-m-d h:i:s', time()),true));
 	fclose($f);*/
     $con->close();
-?>
-授权完成,<a href="soa_music/index.html">进入你的微博列表页面</a><br />
-<?php
+	
+	header("location: http://127.0.0.1/soa-master/soa_music/index.php");
+    exit;
 } else {
-?>
-授权失败。
-<?php
+    echo "授权失败。";
 }
 ?>
