@@ -24,17 +24,17 @@ if ($token) {
 	$c = new SaeTClientV2( WB_AKEY , WB_SKEY , $_SESSION['token']['access_token'] );
 	
 	$uid_get = $c->get_uid();
-    $uid = $uid_get['uid'];
+    	$uid = $uid_get['uid'];
 	$user_message = $c->show_user_by_id($uid);//根据ID获取用户等基本信息
 	$uname = $user_message['screen_name'];
 
 	$con = new mysqli("localhost","root","","my_db");
 	// 检测连接
-    if ($con->connect_error) {
-        die("Connection failed: " . $con->connect_error);
-    }
+    	if ($con->connect_error) {
+        	die("Connection failed: " . $con->connect_error);
+    	}
 	
-	$sql = "SELECT * FROM users  WHERE weibo_id  =  ".$uid;
+	$sql = "SELECT * FROM users  WHERE weibo_id  =  '".$uid."'";
 	if($con->query($sql)->fetch_row()){
 		$sql = "UPDATE users SET username = '".$uname."', last_time = now() WHERE weibo_id = '".$uid."'";
 		/*$f = fopen("log.txt","w");
@@ -66,11 +66,11 @@ if ($token) {
 	fwrite($f,var_export($uid,true));
 	fwrite($f,var_export('20'.date('y-m-d h:i:s', time()),true));
 	fclose($f);*/
-    $con->close();
+    	$con->close();
 	
 	header("location: http://127.0.0.1/soa-master/soa_music/index.php");
-    exit;
+    	exit;
 } else {
-    echo "授权失败。";
+    	echo "授权失败。";
 }
 ?>
