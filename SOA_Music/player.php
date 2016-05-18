@@ -96,11 +96,25 @@ function split_word($input) {
     //return json_encode($res);
 }
 
-if (isset($_GET["search"])){
-		$res = split("\r\n",split_word($_GET['search']));
-		$f = fopen("c:/users/jie/desktop/log.txt","w");
-		fwrite($f,var_export($res,true));
+if (isset($_GET["weibo"]) && isset($_SESSION['token'])){
+	session_start();
+
+	include_once( 'config.php' );
+	include_once( 'saetv2.ex.class.php' );
+
+	$c = new SaeTClientV2( WB_AKEY , WB_SKEY , $_SESSION['token']['access_token'] );
+	$uid_get = $c->get_uid();
+	$uid = $uid_get['uid'];
+	$weibos = $c->user_timeline_by_id($uid);
+	$f = fopen("c:/users/jie/desktop/log.txt","w");
+		fwrite($f,var_export($weibos[statuses][0]['text'],true));
 		fclose($f);
+}
+else if (isset($_GET["search"])){
+		$res = split("\r\n",split_word($_GET['search']));
+		/* $f = fopen("c:/users/jie/desktop/log.txt","w");
+		fwrite($f,var_export($res,true));
+		fclose($f); */
 		$player_list = array();
 		$player_list[] = "40147552";
 		setcookie("playlist", json_encode($player_list), time() + 3600);

@@ -27,15 +27,19 @@ if ($token) {
     	$uid = $uid_get['uid'];
 	$user_message = $c->show_user_by_id($uid);//根据ID获取用户等基本信息
 	$uname = $user_message['screen_name'];
+	$_SESSION['uid'] = $uid;
+	$_SESSION['uname'] = $uname;
+	$_SESSION['uphoto'] = $user_message['profile_image_url'];
+	
 
-	$con = new mysqli("localhost","root","","my_db");
+	$con = new mysqli("localhost","root","miniserver","my_db");
 	// 检测连接
     	if ($con->connect_error) {
         	die("Connection failed: " . $con->connect_error);
     	}
 	
 	$sql = "SELECT * FROM users  WHERE weibo_id  =  '".$uid."'";
-	if($con->query($sql)->fetch_row()){
+	if($con->query($sql)!= null && $con->query($sql)->fetch_row()){
 		$sql = "UPDATE users SET username = '".$uname."', last_time = now() WHERE weibo_id = '".$uid."'";
 		/*$f = fopen("log.txt","w");
 		fwrite($f, $sql);
@@ -68,7 +72,7 @@ if ($token) {
 	fclose($f);*/
     	$con->close();
 	
-	header("location: http://127.0.0.1/soa-master/soa_music/index.php");
+	header("location: http://127.0.0.1/soa/soa_music/index.php");
     	exit;
 } else {
     	echo "授权失败。";

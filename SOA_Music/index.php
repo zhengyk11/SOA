@@ -1,13 +1,9 @@
 <?php
 session_start();
-
 include_once( 'config.php' );
 include_once( 'saetv2.ex.class.php' );
-
 $o = new SaeTOAuthV2( WB_AKEY , WB_SKEY );
-
 $code_url = $o->getAuthorizeURL( WB_CALLBACK_URL );
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -57,7 +53,23 @@ $code_url = $o->getAuthorizeURL( WB_CALLBACK_URL );
 							</div>
 						</li>
             <li><a id="s_button" href="javascript:search()">Search</a></li>
-						<li><a href="<?=$code_url?>">Sign in</a></li>
+						<?php
+						if (isset($_SESSION['uid'])){
+							echo '<li><a href="logout.php">Logout</a></li>';
+							echo '<li><img style="padding-left:10px;" href="#" title="' . $_SESSION['uname'] . '" src="' . $_SESSION['uphoto'] .'"  alt="头像" /></li>';
+						}
+						else{
+							echo '<li class="dropdown"><a href="' . $code_url . '" class="dropdown-toggle" data-toggle="dropdown">
+									Sign in
+									<b class="caret"></b>
+								</a>
+								<ul class="dropdown-menu">
+									 <li><a href="' . $code_url . '">新浪微博登录</a></li>
+									 <li><a href="#">其他</a></li>
+								</ul>
+							</li>';
+						}
+						?>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -100,7 +112,7 @@ $code_url = $o->getAuthorizeURL( WB_CALLBACK_URL );
 					  <!-- slides -->
 					  <div class="carousel-inner" style="margin-top:-30px;">
 						<div class="item active">
-						  <img src="assets/img/slide1.png" alt="">
+						  <img id="img1" src="assets/img/slide1.png" alt="" title="微博动态推荐音乐">
 						</div>
 						<div class="item">
 						  <img src="assets/img/slide2.png" alt="">
