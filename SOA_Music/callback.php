@@ -22,35 +22,44 @@ if ($token) {
 	$_SESSION['token'] = $token;
 	setcookie( 'weibojs_'.$o->client_id, http_build_query($token) );
 	$c = new SaeTClientV2( WB_AKEY , WB_SKEY , $_SESSION['token']['access_token'] );
+	
+	$uid_get = $c->get_uid();
+    $uid = $uid_get['uid'];
+	$user_message = $c->show_user_by_id($uid);//根据ID获取用户等基本信息
+	$uname = $user_message['screen_name'];
+
 	$con = new mysqli("localhost","root","","my_db");
 	// 检测连接
     if ($con->connect_error) {
         die("Connection failed: " . $con->connect_error);
     }
-	/*mysql_select_db("my_db", $con);
-$sql = "CREATE TABLE Users 
-(
-id int NOT NULL AUTO_INCREMENT,
-PRIMARY KEY(id),
-username varchar(24),
-password varchar(16),
-weibo_id varchar(24),
-last_time datetime,
-unique (username),
-unique (weibo_id)
-)";
-mysql_query($sql,$con);*/
-	$uid_get = $c->get_uid();
-    $uid = $uid_get['uid'];
-	$user_message = $c->show_user_by_id( $uid);//根据ID获取用户等基本信息
-	$uname = $user_message['screen_name'];
-	//$current_time = '20'.date('y-m-d h:i:s', time());
-	$sql = "insert into users (weibo_id,username,last_time) values('".$uid."','".$uname."',now()) 
-	on duplicate key update username = '".$uname."',last_time = now()";
-	//mysql_query($sql,$con);
-	//$sql = "insert into users (last_time) values(".$current_time.")";
-
+	
+	$sql = "SELECT * FROM users  WHERE weibo_id  =  ".$uid;
+	if($con->query($sql)->fetch_row()){
+		$sql = "UPDATE users SET username = '".$uname."', last_time = now() WHERE weibo_id = '".$uid."'";
+		/*$f = fopen("log.txt","w");
+		fwrite($f, $sql);
+		fclose($f);*/
+	}else{
+		$sql = "INSERT INTO users (weibo_id, username, last_time) VALUES('".$uid."','".$uname."', now())";
+		/*$f = fopen("log.txt","w");
+		fwrite($f, $sql);
+		fclose($f);*/
+	}
 	$con->query($sql);
+	/*$dataArray=array();
+	while($row=$result->fetch_row()){
+		$dataArray[]=$row;
+	} 
+	print_r($dataArray);
+	
+	$sql = " SELECT * FROM users  WHERE username  =  '1'";
+	$result = $con->query($sql);
+	$dataArray=array();
+	while($row=$result->fetch_row()){
+		$dataArray[]=$row;
+	} 
+	print_r($dataArray);*/
 	/*$f = fopen("log.txt","w");
 	//fwrite($f, $sql.' ');
 	fwrite($f,var_export($uname,true));
