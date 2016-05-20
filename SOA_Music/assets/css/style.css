@@ -180,11 +180,20 @@ h2.subtitle {
 }
 
 /* footer */
+/*
 #footer {
 
 	background: #fd680e;
 	padding: 20px 0 5px;
 }
+*/
+#footer {
+
+  background: #333;
+  color: #f2f2f2;
+  padding: 20px 0 5px;
+}
+
 
 p.copyright {
 	color: #fff;
