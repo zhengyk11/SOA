@@ -1,31 +1,32 @@
 <?php
-$con = mysql_connect("localhost","root","miniserver");
-if (!$con)
-  {
-  die('Could not connect: ' . mysql_error());
-  }
+// 创建连接
+$con = new mysqli("localhost","root","");
+// 检测连接
+if ($con->connect_error) {
+    die("Connection failed: " . $con->connect_error);
+}
 
-if (mysql_query("CREATE DATABASE my_db",$con))
-  {
-  echo "Database created";
-  }
-else
-  {
-  echo "Error creating database: " . mysql_error();
-  } 
+// Create database
+$sql = "CREATE DATABASE my_db";
+if ($con->query($sql) === TRUE) {
+    echo "Database created successfully";
+} else {
+    echo "Error creating database: " . $con->error;
+}
 
-mysql_select_db("my_db", $con);
+$con = new mysqli("localhost","root","","my_db");
 $sql = "CREATE TABLE Users 
 (
 id int NOT NULL AUTO_INCREMENT,
 PRIMARY KEY(id),
 username varchar(24),
 password varchar(16),
-email varchar(24),
+weibo_id varchar(24),
+last_time datetime,
 unique (username),
-unique (email)
+unique (weibo_id)
 )";
-mysql_query($sql,$con);
+$con->query($sql);
 
 $sql = "CREATE TABLE Actions 
 (
@@ -38,7 +39,7 @@ star int,
 user_id int,
 foreign key(user_id) references Users(id) on delete cascade on update cascade
 )";
-mysql_query($sql,$con);
+$con->query($sql);
 
-mysql_close($con);
+$con->close();
 ?>

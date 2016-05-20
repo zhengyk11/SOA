@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Created by PhpStorm.
  * User: Zhengyk11
@@ -6,8 +6,7 @@
  * Time: 0:08
  */
 include 'list.php';
-$con = mysql_connect("localhost","root","miniserver");
-mysql_select_db("my_db", $con);
+$con = new mysqli("localhost","root","","my_db");
 
 function curl_get($url)
 {
@@ -193,5 +192,6 @@ if (isset($lrc_info["lrc"]["lyric"])) {
 } else {
 		$play_info["lrc"] = "no";
 }
+$con->close();
 echo json_encode($play_info);
-mysql_close($con);
+?>

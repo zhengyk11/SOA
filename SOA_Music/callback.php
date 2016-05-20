@@ -32,11 +32,11 @@ if ($token) {
 	$_SESSION['uphoto'] = $user_message['profile_image_url'];
 	
 
-	$con = new mysqli("localhost","root","miniserver","my_db");
+	$con = new mysqli("localhost","root","","my_db");
 	// 检测连接
-    	if ($con->connect_error) {
-        	die("Connection failed: " . $con->connect_error);
-    	}
+    if ($con->connect_error) {
+        die("Connection failed: " . $con->connect_error);
+    }
 	
 	$sql = "SELECT * FROM users  WHERE weibo_id  =  '".$uid."'";
 	if($con->query($sql)!= null && $con->query($sql)->fetch_row()){
@@ -70,7 +70,7 @@ if ($token) {
 	fwrite($f,var_export($uid,true));
 	fwrite($f,var_export('20'.date('y-m-d h:i:s', time()),true));
 	fclose($f);*/
-    	$con->close();
+    $con->close();
 	
 	header("location: http://127.0.0.1/soa/soa_music/index.php");
     	exit;
