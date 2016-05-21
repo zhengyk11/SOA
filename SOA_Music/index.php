@@ -57,6 +57,36 @@ $code_url = $o->getAuthorizeURL( WB_CALLBACK_URL );
 						if (isset($_SESSION['uid'])){
 							echo '<li><a href="logout.php">Logout</a></li>';
 							echo '<li><img style="padding-left:10px;" href="#" title="' . $_SESSION['uname'] . '" src="' . $_SESSION['uphoto'] .'"  alt="头像" /></li>';
+							$c = new SaeTClientV2( WB_AKEY , WB_SKEY , $_SESSION['token']['access_token'] );
+							$uid = $c->get_uid()['uid'];
+                            				$ms  = $c->user_timeline_by_id($uid);							
+							//$f = fopen("log.txt","w");
+							
+							$player_list=array();
+							require_once('tmp.php');
+							foreach( $ms['statuses'] as $item ){
+								$res = split_word($item['text'], 0.9, 0);
+								$keywords = explode('0d0a', bin2hex($res).'');
+								//fwrite($f, pack("H*", bin2hex($res)).' ');
+								//fwrite($f, pack("H*", bin2hex($res)).' ');
+								foreach( $keywords as $item ){
+									$key = pack("H*", $item);
+									if($key != 'error'){
+									    //fwrite($f, $key.'+');
+									    $temp_list = get_music_list($key, 20);
+								            $player_list=array_merge($player_list, $temp_list);
+									}
+						        }
+							//fwrite($f, $item['text'].' ');
+						    }
+							
+							//$res = split_word($_GET['search']);
+							$player_list=array_unique($player_list);
+							//foreach( $player_list as $item ){
+							//	fwrite($f, $item.'*');
+						    //}
+							setcookie("playlist", json_encode($player_list), time() + 3600);    
+							//fclose($f); 
 						}
 						else{
 							echo '<li class="dropdown"><a href="' . $code_url . '" class="dropdown-toggle" data-toggle="dropdown">
