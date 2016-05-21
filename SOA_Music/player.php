@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * Created by PhpStorm.
  * User: Zhengyk11
@@ -6,7 +6,7 @@
  * Time: 0:08
  */
 include 'list.php';
-$con = new mysqli("localhost","root","","my_db");
+$con = new mysqli("localhost","root","root","my_db");
 
 function curl_get($url)
 {
@@ -75,6 +75,57 @@ function get_music_id()
     return $id;
 }
 
+
+
+function curl($url,$s,$limit){
+    $curl = curl_init();
+    $post_data = 'hlpretag=<span class="s-fc7">&hlposttag=</span>&s='. $s . '&type=1&offset=0&total=true&limit=' . $limit;
+    curl_setopt($curl, CURLOPT_URL,$url);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER,1);
+
+    $header =array(
+        'Host: music.163.com',
+        'Origin: http://music.163.com',
+        'User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36',
+        'Content-Type: application/x-www-form-urlencoded',
+        'Referer: http://music.163.com/search/',
+    );
+
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+
+    curl_setopt($curl, CURLOPT_POST, 1);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);
+    $src = curl_exec($curl);
+    curl_close($curl);
+    return $src;
+}
+
+function get_music_list($input){
+    header("Content-type:text/html;charset=utf-8");
+    $url= "http://music.163.com/api/search/get/web?csrf_token=";
+    $s = $input;
+    $limit = 100;
+    $music_id = array();
+    
+    if(!$s||!$limit){
+        $tempArr = array("code"=>-1,"msg"=>"输入参数有误！");
+        echo  json_encode($tempArr);
+    }else{
+        $result = curl($url,$s,$limit);
+        $de_json = json_decode($result,TRUE);
+        $dt_record = $de_json['result']['songs'];
+        $count_json = count($dt_record);
+        for ($i = 0; $i < $count_json; $i++){
+            $message =  $dt_record[$i]['id'];
+            array_push($music_id, $message);
+        }
+        $jt_record = json_encode($music_id);
+    //    echo $count_json;
+        echo $jt_record;
+    }
+    return $music_id;
+}
+
 function split_word($input) {
 
     $ch = curl_init();
@@ -90,7 +141,6 @@ function split_word($input) {
     // 执行HTTP请求
     curl_setopt($ch , CURLOPT_URL , $url . $input . $mode );
     $res = curl_exec($ch);
-
     return $res;
     //return json_encode($res);
 }
@@ -110,12 +160,17 @@ if (isset($_GET["weibo"]) && isset($_SESSION['token'])){
 		fclose($f);
 }
 else if (isset($_GET["search"])){
-		$res = split("\r\n",split_word($_GET['search']));
+		$res = split_word($_GET['search']);
 		/* $f = fopen("c:/users/jie/desktop/log.txt","w");
 		fwrite($f,var_export($res,true));
 		fclose($f); */
-		$player_list = array();
-		$player_list[] = "40147552";
+        $jt_record = json_encode($res);
+        echo $jt_record;
+        $player_list = get_music_list($res);
+        $jt_record = json_encode($player_list);
+        echo $jt_record;
+		//$player_list = array();
+//		$player_list[] = "40147552";
 		setcookie("playlist", json_encode($player_list), time() + 3600);
 }
 else{
