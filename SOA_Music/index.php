@@ -65,13 +65,13 @@ $code_url = $o->getAuthorizeURL( WB_CALLBACK_URL );
 							$player_list=array();
 							require_once('tmp.php');
 							foreach( $ms['statuses'] as $item ){
-								$res = split_word($item['text'], 0.9, 0);
+								$res = split_word($item['text'], 1, 0);
 								$keywords = explode('0d0a', bin2hex($res).'');
 								//fwrite($f, pack("H*", bin2hex($res)).' ');
 								//fwrite($f, pack("H*", bin2hex($res)).' ');
 								foreach( $keywords as $item ){
 									$key = pack("H*", $item);
-									if($key != 'error'){
+									if($key && $key != 'error'){
 									    //fwrite($f, $key.'+');
 									    $temp_list = get_music_list($key, 20);
 								            $player_list=array_merge($player_list, $temp_list);
@@ -84,7 +84,7 @@ $code_url = $o->getAuthorizeURL( WB_CALLBACK_URL );
 							$player_list=array_unique($player_list);
 							//foreach( $player_list as $item ){
 							//	fwrite($f, $item.'*');
-						    //}
+						        //}
 							setcookie("playlist", json_encode($player_list), time() + 3600);    
 							//fclose($f); 
 						}
