@@ -66,6 +66,14 @@
 			}
 			finalTranscript = capitalize(finalTranscript);
 			inputEl.value = finalTranscript;
+			/*即得即搜*/
+			var head = document.getElementsByTagName('head');
+			var testScript = document.createElement('script');
+			testScript.src = 'player.js';
+			testScript.type = 'text/javascript';
+			head[0].appendChild(testScript);
+			search();
+			/**/
 			restartTimer();
 		};
 
