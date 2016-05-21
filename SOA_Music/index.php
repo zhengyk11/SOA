@@ -29,9 +29,9 @@ $code_url = $o->getAuthorizeURL( WB_CALLBACK_URL );
 </head>
 <body>
 
-		<div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
+		<div class="navbar navbar-inverse navbar-fixed-top" style="background: #333;">
+      <div class="container" >
+        <div class="navbar-header" >
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -39,7 +39,7 @@ $code_url = $o->getAuthorizeURL( WB_CALLBACK_URL );
           </button>
           <a class="navbar-brand" href="#">SOA</a>
         </div>
-        <div class="navbar-collapse collapse">
+        <div class="navbar-collapse collapse" style="background: #333;">
 					
           <ul class="nav navbar-nav navbar-right">
 						<li>
