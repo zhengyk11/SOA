@@ -100,11 +100,11 @@ function curl($url,$s,$limit){
     return $src;
 }
 
-function get_music_list($input){
+function get_music_list($input, $limit = 100){
     header("Content-type:text/html;charset=utf-8");
     $url= "http://music.163.com/api/search/get/web?csrf_token=";
     $s = $input;
-    $limit = 100;
+    //$limit = 100;
     $music_id = array();
     
     if(!$s||!$limit){
@@ -126,11 +126,11 @@ function get_music_list($input){
     return $music_id;
 }
 
-function split_word($input) {
+function split_word($input, $p1 = 0.8, $p2 = 0) {
 
     $ch = curl_init();
     $url = 'http://apis.baidu.com/apistore/pullword/words?source=';
-    $mode = '&param1=0.8&param2=0';
+    $mode = '&param1='.$p1.'&param2='.$p2;
     $header = array(
         'apikey:e9efbd5ac9db0c055b973011482a4418',
     );
