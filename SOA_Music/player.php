@@ -121,7 +121,7 @@ function get_music_list($input){
         }
         $jt_record = json_encode($music_id);
     //    echo $count_json;
-        echo $jt_record;
+        //echo $jt_record;
     }
     return $music_id;
 }
@@ -164,14 +164,14 @@ else if (isset($_GET["search"])){
 		/* $f = fopen("c:/users/jie/desktop/log.txt","w");
 		fwrite($f,var_export($res,true));
 		fclose($f); */
-        $jt_record = json_encode($res);
-        echo $jt_record;
+        //$jt_record = json_encode($res);
+        //echo $jt_record;
         $player_list = get_music_list($res);
-        $jt_record = json_encode($player_list);
-        echo $jt_record;
-		//$player_list = array();
-//		$player_list[] = "40147552";
-		setcookie("playlist", json_encode($player_list), time() + 3600);
+        //$jt_record = json_encode($player_list);
+        //echo $jt_record;
+	//$player_list = array();
+	//$player_list[] = "40147552";
+	setcookie("playlist", json_encode($player_list), time() + 3600);
 }
 else{
 		if (isset($_COOKIE["playlist"])){
