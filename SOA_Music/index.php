@@ -104,8 +104,8 @@ $code_url = $o->getAuthorizeURL( WB_CALLBACK_URL );
 							</div>
 					</div>					
 				</div>
-				<div class="col-lg-4 col-lg-offset-2">
-					<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+				<div class="col-lg-4 col-lg-offset-1">
+					<div id="carousel-example-generic" style="position:absolute;margin-left:100px;" class="carousel slide" data-ride="carousel">
 					  <ol class="carousel-indicators">
 						<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
 						<li data-target="#carousel-example-generic" data-slide-to="1"></li>
@@ -123,7 +123,13 @@ $code_url = $o->getAuthorizeURL( WB_CALLBACK_URL );
 						  <img src="assets/img/slide3.png" alt="">
 						</div>
 					  </div>
-					</div>		
+					</div >		
+						
+					<div id="p_list" style="top:-30px;position:absolute;background:#FF0;width:500px;height:450px">
+						<button id="p_back" style="position:absolute;right:0;bottom:0;">
+							back
+						</button>
+					</div>
 				</div>
 				
 			</div>

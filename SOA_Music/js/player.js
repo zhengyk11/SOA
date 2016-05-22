@@ -13,7 +13,11 @@ s_button = $("#s_button")
 input = $("#t_input")
 img1 = $("#img1")
 star = $("#star")
+p_list=$("#p_list")
+ppt=$("#carousel-example-generic")
+p_back=$("#p_back")
 $(document).ready(function () {
+		p_list.css("display", "none");
     cd_size();
     $.get("player.php?_=" + (new Date()).getTime(), function (data) {
         mp3_info = JSON.parse(data);
@@ -49,24 +53,13 @@ $('#t_input').bind('keypress',function(event){
 });
 
 $("#img1").bind("click",function(){
-			$.get("player.php?weibo=1", function (data) {
-					mp3_info = JSON.parse(data);
-					$("#player").attr("src", mp3_info.mp3);
-					album.css("background-image", "url('" + mp3_info.cover + "')");
-					btn.attr("src", "images/pause.png");
-					music_name.html(mp3_info.music_name);
-					artist.html(mp3_info.artists);
-					oAudio.play();
-					album.addClass("roll");
-					inn.addClass("roll");
-					lrc_row.html("");
-					if (mp3_info.lrc != "no") {
-							lrc = mp3_info.lrc;
-							lrc_interval = setInterval("display_lrc()", 1000);
-					} else {
-							lrc = "no";
-					}
-			});
+	ppt.css("display", "none");
+	p_list.css("display", "block");
+});
+
+$("#p_back").bind("click",function(){
+	ppt.css("display", "block");
+	p_list.css("display", "none");
 });
 
 function m_play() {
