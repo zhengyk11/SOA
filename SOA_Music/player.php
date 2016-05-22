@@ -5,12 +5,11 @@
  * Date: 2016/4/2 0025
  * Time: 0:08
  */
-include 'list.php';
-require_once("api.php");
-error_reporting(E_ERROR);
-$con = new mysqli("localhost","root","miniserver","my_db");
 
-
+//include 'list.php';
+//error_reporting(E_ERROR);
+require_once('api.php');
+$con = new mysqli("localhost","root","","my_db");
 
 if (isset($_GET["weibo"]) && isset($_SESSION['token'])){
 	session_start();
@@ -22,9 +21,9 @@ if (isset($_GET["weibo"]) && isset($_SESSION['token'])){
 	$uid_get = $c->get_uid();
 	$uid = $uid_get['uid'];
 	$weibos = $c->user_timeline_by_id($uid);
-	$f = fopen("c:/users/jie/desktop/log.txt","w");
-		fwrite($f,var_export($weibos[statuses][0]['text'],true));
-		fclose($f);
+	//$f = fopen("c:/users/jie/desktop/log.txt","w");
+	//	fwrite($f,var_export($weibos[statuses][0]['text'],true));
+	//	fclose($f);
 }
 else if (isset($_GET["search"])){
 		$res = split_word($_GET['search']);
@@ -40,12 +39,12 @@ else if (isset($_GET["search"])){
 	//$player_list[] = "40147552";
 	setcookie("playlist", json_encode($player_list), time() + 3600);
 }
-else{
+/*else{
 		if (isset($_COOKIE["playlist"])){
 			 $player_list = json_decode(str_replace("\\", "", $_COOKIE["playlist"]));
-			 /* $f = fopen("c:/users/jie/desktop/log.txt","w");
-				fwrite($f,var_export($player_list,true));
-				fclose($f); */
+			 // $f = fopen("c:/users/jie/desktop/log.txt","w");
+			 //	fwrite($f,var_export($player_list,true));
+		     //fclose($f); 
 		}
 		else{
 				foreach ($playlist_list as $key) {
@@ -60,7 +59,7 @@ else{
 				}
 				setcookie("playlist", json_encode($player_list), time() + 3600);
 		}
-}
+}*/
 
 //获取数据
 $id = get_music_id();
@@ -106,8 +105,10 @@ if (isset($lrc_info["lrc"]["lyric"])) {
 						array_pop($row);
 						foreach ($row as $key) {
 								$time = explode(":", substr($key, 1));
-								$time = $time[0] * 60 + $time[1];
-								$play_info["lrc"][$time] = $col_text;
+								if(array_key_exists(0, $time) && array_key_exists(1, $time)){
+									$time = $time[0] * 60 + $time[1];
+									$play_info["lrc"][$time] = $col_text;
+								}
 						}
 				}
 		}

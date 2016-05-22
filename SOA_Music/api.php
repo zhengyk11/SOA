@@ -1,4 +1,5 @@
 <?php
+
 function curl_get($url)
 {
     $refer = "http://music.163.com/";
@@ -34,9 +35,22 @@ function get_music_lyric($music_id)
 
 function rand_music()
 {
-    global $player_list;
-    $sum = count($player_list);
-    $id = $player_list[rand(0, $sum - 1)];
+    //global $player_list;
+	$player_list = array("27602841","28870240","28773824","19164058","4209157","28837261","26136782","18127541","4153632","4208437","26082104","22711515","1987888","857606","22717355","29418291","17194024","857619","17194024","29498036","28768456","17115765","859516","4164331",);
+	if(isset($_COOKIE["playlist"])){
+		$tmp = (array)json_decode(str_replace("\\", "", $_COOKIE["playlist"]));
+		if(count($tmp) > 0)
+			$player_list = array_values($tmp);
+		//$f = fopen("log1.txt","w");
+		//fwrite($f,var_export($player_list,true));
+		//fclose($f); 
+	}
+	$pl = $player_list;
+	//$f = fopen("log1.txt","w");
+	//fwrite($f,var_export($pl,true));
+	//fclose($f); 
+    $sum = count($pl);
+    $id = (string)$pl[rand(0, $sum - 1)];
     return $id;
 }
 
