@@ -291,8 +291,11 @@ html, body {
 }
 
 #range {
-    margin-right: 30px;
+    margin-right: 15px;
     margin-left: 35px;
+}
+#star{
+	margin-left: 13px;
 }
 
 input[type="range"] {

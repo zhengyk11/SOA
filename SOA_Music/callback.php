@@ -32,7 +32,7 @@ if ($token) {
 	$_SESSION['uphoto'] = $user_message['profile_image_url'];
 	
 
-	$con = new mysqli("localhost","root","","my_db");
+	$con = new mysqli("localhost","root","miniserver","my_db");
 	// 检测连接
     if ($con->connect_error) {
         die("Connection failed: " . $con->connect_error);
@@ -71,6 +71,39 @@ if ($token) {
 	fwrite($f,var_export('20'.date('y-m-d h:i:s', time()),true));
 	fclose($f);*/
     $con->close();
+		
+		$c = new SaeTClientV2( WB_AKEY , WB_SKEY , $_SESSION['token']['access_token'] );
+							$uid = $_SESSION['uid'];
+                            $ms  = $c->user_timeline_by_id($uid);							
+							$f = fopen("log0.txt","w");
+							
+							$p_list=array();
+							include 'api.php';
+							//globe $p_list;
+							foreach( $ms['statuses'] as $item ){
+								
+								$context = $item['text'];
+								//fwrite($f, $context);
+								$res = split_word($context, 0.8, 0);
+								//fwrite($f, $context.' ');
+								$keywords = explode('0d0a', bin2hex($res).'');
+								//fwrite($f, $keywords.' ');
+								//fwrite($f, pack("H*", bin2hex($res)).' ');
+								foreach( $keywords as $item ){
+									$key = pack("H*", $item);
+									if($key && $key != 'error'){
+									    fwrite($f, var_export($key, true));
+									    $temp_list = get_music_list($key, 5);
+								            $p_list=array_merge($p_list, $temp_list);
+									}
+						        }
+						    }
+							
+							//$res = split_word($_GET['search']);
+							$p_list=array_unique($p_list);
+							fwrite($f, var_export($p_list, true));
+							setcookie("playlist", json_encode($p_list), time() + 3600);    
+							fclose($f); 
 	
 	header("location: http://127.0.0.1/soa/soa_music/index.php");
     	exit;

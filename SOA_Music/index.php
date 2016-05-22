@@ -57,38 +57,7 @@ $code_url = $o->getAuthorizeURL( WB_CALLBACK_URL );
 						if (isset($_SESSION['uid'])){
 							echo '<li><a href="logout.php">Logout</a></li>';
 							echo '<li><img style="padding-left:10px;" href="#" title="' . $_SESSION['uname'] . '" src="' . $_SESSION['uphoto'] .'"  alt="头像" /></li>';
-							$c = new SaeTClientV2( WB_AKEY , WB_SKEY , $_SESSION['token']['access_token'] );
-							$uid = $_SESSION['uid'];
-                            $ms  = $c->user_timeline_by_id($uid);							
-							$f = fopen("log0.txt","w");
 							
-							$p_list=array();
-							include 'api.php';
-							//globe $p_list;
-							foreach( $ms['statuses'] as $item ){
-								
-								$context = $item['text'];
-								//fwrite($f, $context);
-								$res = split_word($context, 0.8, 0);
-								//fwrite($f, $context.' ');
-								$keywords = explode('0d0a', bin2hex($res).'');
-								//fwrite($f, $keywords.' ');
-								//fwrite($f, pack("H*", bin2hex($res)).' ');
-								foreach( $keywords as $item ){
-									$key = pack("H*", $item);
-									if($key && $key != 'error'){
-									    fwrite($f, var_export($key, true));
-									    $temp_list = get_music_list($key, 5);
-								            $p_list=array_merge($p_list, $temp_list);
-									}
-						        }
-						    }
-							
-							//$res = split_word($_GET['search']);
-							$p_list=array_unique($p_list);
-							fwrite($f, var_export($p_list, true));
-							setcookie("playlist", json_encode($p_list), time() + 3600);    
-							fclose($f); 
 						}
 						else{
 							echo '<li class="dropdown"><a href="' . $code_url . '" class="dropdown-toggle" data-toggle="dropdown">
@@ -125,6 +94,7 @@ $code_url = $o->getAuthorizeURL( WB_CALLBACK_URL );
 											<a href="javascript:m_play()"><img id="m_play" src="images/play.png"></a>
 											<input id="range" type="range" min="0" max="10" value="5" onchange="volume(this.value)">
 											<a href="javascript:next_music()"><img id="next_music" src="images/forward.png"></a>
+											<a href="javascript:m_star()"><img id="star" src="images/heart_36.512820512821px_1194482_easyicon.net.png"></a>
 									</div>
 									<div class="info">
 											<span id="music_name"></span><span id="artist"></span>

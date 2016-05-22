@@ -7,9 +7,9 @@
  */
 
 //include 'list.php';
-//error_reporting(E_ERROR);
+error_reporting(E_ERROR);
 include 'api.php';
-$con = new mysqli("localhost","root","","my_db");
+$con = new mysqli("localhost","root","miniserver","my_db");
 
 if (isset($_GET["weibo"]) && isset($_SESSION['token'])){
 	session_start();
@@ -46,9 +46,9 @@ else{
 		if (isset($_COOKIE["playlist"])){
 			 $player_list = (array)json_decode(str_replace("\\", "", $_COOKIE["playlist"]));
 			 $player_list = array_values($player_list);
-			 $f = fopen("log1.txt","w");
+			 /* $f = fopen("log1.txt","w");
 			 fwrite($f,var_export($player_list,true));
-		     fclose($f); 
+		     fclose($f); */ 
 		}
 		else{
 				foreach ($playlist_list as $key) {
@@ -120,5 +120,6 @@ if (isset($lrc_info["lrc"]["lyric"])) {
 		$play_info["lrc"] = "no";
 }
 $con->close();
+setcookie("playing", json_encode($id), time() + 3600);
 echo json_encode($play_info);
 ?>

@@ -12,6 +12,7 @@ lrc_row = $("#lrc");
 s_button = $("#s_button")
 input = $("#t_input")
 img1 = $("#img1")
+star = $("#star")
 $(document).ready(function () {
     cd_size();
     $.get("player.php?_=" + (new Date()).getTime(), function (data) {
@@ -156,4 +157,15 @@ function search() {
 					}
 			});
 		}
+}
+
+function m_star() {
+	if (star.attr("src") != "images/Heart_love_16px_1096414_easyicon.net.png"){
+		star.attr("src", "images/Heart_love_16px_1096414_easyicon.net.png");
+		$.get("mark.php?key=1", function (data) {});
+	}
+	else{
+		star.attr("src", "images/heart_36.512820512821px_1194482_easyicon.net.png");
+		$.get("mark.php?key=0", function (data) {});
+	}
 }
