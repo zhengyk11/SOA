@@ -26,7 +26,7 @@ if (isset($_GET["weibo"]) && isset($_SESSION['token'])){
 	//	fclose($f);
 }
 else if (isset($_GET["search"])){
-	    setcookie("playlist", "", time()-3600);
+	    //setcookie("playlist", "", time()-3600);
 		$res = split_word($_GET['search']);
 		/* $f = fopen("c:/users/jie/desktop/log.txt","w");
 		fwrite($f,var_export($res,true));
@@ -44,10 +44,11 @@ else if (isset($_GET["search"])){
 }
 else{
 		if (isset($_COOKIE["playlist"])){
-			 $player_list = json_decode(str_replace("\\", "", $_COOKIE["playlist"]));
-			 // $f = fopen("c:/users/jie/desktop/log.txt","w");
-			 //	fwrite($f,var_export($player_list,true));
-		     //fclose($f); 
+			 $player_list = (array)json_decode(str_replace("\\", "", $_COOKIE["playlist"]));
+			 $player_list = array_values($player_list);
+			 $f = fopen("log1.txt","w");
+			 fwrite($f,var_export($player_list,true));
+		     fclose($f); 
 		}
 		else{
 				foreach ($playlist_list as $key) {
@@ -65,7 +66,7 @@ else{
 }
 
 //获取数据
-$id = get_music_id();
+$id = get_music_id($player_list);
 $music_info = json_decode(get_music_info($id), true);
 $lrc_info = json_decode(get_music_lyric($id), true);
 

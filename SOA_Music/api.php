@@ -33,9 +33,9 @@ function get_music_lyric($music_id)
     return curl_get($url);
 }
 
-function rand_music()
+function rand_music($player_list)
 {
-    global $player_list;
+    //global ;
 	//if(isset($_COOKIE["playlist"])){
 	//	$tmp = (array)json_decode(str_replace("\\", "", $_COOKIE["playlist"]));
 	//	if(count($tmp) > 0)
@@ -50,19 +50,19 @@ function rand_music()
 	//fwrite($f,var_export($player_list,true));
 	//fclose($f); 
 	//}
-	//$f = fopen("log1.txt","w");
-	//fwrite($f,var_export($player_list,true));
-	//fclose($f);
+	$f = fopen("log2.txt","w");
+	fwrite($f,var_export($player_list,true));
+	fclose($f);
     $sum = count($player_list);
     $id = (string)$player_list[rand(0, $sum - 1)];
     return $id;
 }
 
-function get_music_id()
+function get_music_id($player_list)
 {
     $played = isset($_COOKIE["played"]) ? json_decode(str_replace("\\", "", $_COOKIE["played"])) : null;
-    $id = rand_music();
-	global $player_list;
+    $id = rand_music($player_list);
+	//global $player_list;
 	$sum = count($player_list);
     if ($played != null && $sum >= 4) {
         if ($sum >= 2) {
@@ -71,15 +71,15 @@ function get_music_id()
             $sum -= 1;
         }
         while (in_array($id, $played)) {
-            $id = rand_music();
+            $id = rand_music($player_list);
         }
         if (count($played) >= $sum) {
             array_shift($played);
         }
     }
-		if (!in_array($id, $played)){
-				$played[] = $id;
-		}
+	if ($played != null && !in_array($id, $played)){
+		$played[] = $id;
+	}
     setcookie("played", json_encode($played), time() + 3600);
     return $id;
 }

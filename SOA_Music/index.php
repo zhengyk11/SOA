@@ -60,10 +60,11 @@ $code_url = $o->getAuthorizeURL( WB_CALLBACK_URL );
 							$c = new SaeTClientV2( WB_AKEY , WB_SKEY , $_SESSION['token']['access_token'] );
 							$uid = $_SESSION['uid'];
                             $ms  = $c->user_timeline_by_id($uid);							
-							//$f = fopen("log.txt","w");
+							$f = fopen("log0.txt","w");
 							
-							$player_list=array();
-							require_once('api.php');
+							$p_list=array();
+							include 'api.php';
+							//globe $p_list;
 							foreach( $ms['statuses'] as $item ){
 								
 								$context = $item['text'];
@@ -76,21 +77,18 @@ $code_url = $o->getAuthorizeURL( WB_CALLBACK_URL );
 								foreach( $keywords as $item ){
 									$key = pack("H*", $item);
 									if($key && $key != 'error'){
-									    //fwrite($f, $key.' ');
-									    $temp_list = get_music_list($key, 20);
-								            $player_list=array_merge($player_list, $temp_list);
+									    fwrite($f, var_export($key, true));
+									    $temp_list = get_music_list($key, 5);
+								            $p_list=array_merge($p_list, $temp_list);
 									}
 						        }
-							
 						    }
 							
 							//$res = split_word($_GET['search']);
-							$player_list=array_unique($player_list);
-							//foreach( $player_list as $item ){
-							//	fwrite($f, $item.'*');
-                            //}
-							setcookie("playlist", json_encode($player_list), time() + 3600);    
-							//fclose($f); 
+							$p_list=array_unique($p_list);
+							fwrite($f, var_export($p_list, true));
+							setcookie("playlist", json_encode($p_list), time() + 3600);    
+							fclose($f); 
 						}
 						else{
 							echo '<li class="dropdown"><a href="' . $code_url . '" class="dropdown-toggle" data-toggle="dropdown">
