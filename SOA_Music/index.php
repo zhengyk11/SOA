@@ -58,14 +58,15 @@ $code_url = $o->getAuthorizeURL( WB_CALLBACK_URL );
 							echo '<li><a href="logout.php">Logout</a></li>';
 							echo '<li><img style="padding-left:10px;" href="#" title="' . $_SESSION['uname'] . '" src="' . $_SESSION['uphoto'] .'"  alt="头像" /></li>';
 							$c = new SaeTClientV2( WB_AKEY , WB_SKEY , $_SESSION['token']['access_token'] );
-							$uid = $c->get_uid()['uid'];
-                            				$ms  = $c->user_timeline_by_id($uid);							
+							$uid = $_SESSION['uid'];
+              $ms  = $c->user_timeline_by_id($uid);							
 							//$f = fopen("log.txt","w");
 							
 							$player_list=array();
-							require_once('tmp.php');
+							require_once('api.php');
 							foreach( $ms['statuses'] as $item ){
-								$res = split_word($item['text'], 1, 0);
+								//fwrite($f, $item['text'].'m');
+								$res = split_word($item['text'], 0.5, 0);
 								$keywords = explode('0d0a', bin2hex($res).'');
 								//fwrite($f, pack("H*", bin2hex($res)).' ');
 								//fwrite($f, pack("H*", bin2hex($res)).' ');
@@ -77,7 +78,7 @@ $code_url = $o->getAuthorizeURL( WB_CALLBACK_URL );
 								            $player_list=array_merge($player_list, $temp_list);
 									}
 						        }
-							//fwrite($f, $item['text'].' ');
+							
 						    }
 							
 							//$res = split_word($_GET['search']);
