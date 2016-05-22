@@ -8,7 +8,7 @@
 
 //include 'list.php';
 //error_reporting(E_ERROR);
-require_once('api.php');
+include 'api.php';
 $con = new mysqli("localhost","root","","my_db");
 
 if (isset($_GET["weibo"]) && isset($_SESSION['token'])){
@@ -26,20 +26,23 @@ if (isset($_GET["weibo"]) && isset($_SESSION['token'])){
 	//	fclose($f);
 }
 else if (isset($_GET["search"])){
+	    setcookie("playlist", "", time()-3600);
 		$res = split_word($_GET['search']);
 		/* $f = fopen("c:/users/jie/desktop/log.txt","w");
 		fwrite($f,var_export($res,true));
 		fclose($f); */
         //$jt_record = json_encode($res);
         //echo $jt_record;
-        $player_list = get_music_list($res);
+		global $player_list;
+		if($res && strstr($res, 'error') == false)
+			$player_list = get_music_list($res, 20);
         //$jt_record = json_encode($player_list);
         //echo $jt_record;
-	//$player_list = array();
-	//$player_list[] = "40147552";
-	setcookie("playlist", json_encode($player_list), time() + 3600);
+	    //$player_list = array();
+	    //$player_list[] = "40147552";
+	    setcookie("playlist", json_encode($player_list), time()+3600);
 }
-/*else{
+else{
 		if (isset($_COOKIE["playlist"])){
 			 $player_list = json_decode(str_replace("\\", "", $_COOKIE["playlist"]));
 			 // $f = fopen("c:/users/jie/desktop/log.txt","w");
@@ -59,7 +62,7 @@ else if (isset($_GET["search"])){
 				}
 				setcookie("playlist", json_encode($player_list), time() + 3600);
 		}
-}*/
+}
 
 //获取数据
 $id = get_music_id();

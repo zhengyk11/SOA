@@ -66,7 +66,7 @@ $code_url = $o->getAuthorizeURL( WB_CALLBACK_URL );
 							require_once('api.php');
 							foreach( $ms['statuses'] as $item ){
 								
-								$context = str_replace(" ", ".", $item['text']);
+								$context = $item['text'];
 								//fwrite($f, $context);
 								$res = split_word($context, 0.8, 0);
 								//fwrite($f, $context.' ');
