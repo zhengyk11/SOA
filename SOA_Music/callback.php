@@ -25,7 +25,7 @@ if ($token) {
 	$c = new SaeTClientV2( WB_AKEY , WB_SKEY , $_SESSION['token']['access_token'] );
 	
 	$uid_get = $c->get_uid();
-    	$uid = $uid_get['uid'];
+    $uid = $uid_get['uid'];
 	$user_message = $c->show_user_by_id($uid);//根据ID获取用户等基本信息
 	$uname = $user_message['screen_name'];
 	$_SESSION['uid'] = $uid;
@@ -33,7 +33,7 @@ if ($token) {
 	$_SESSION['uphoto'] = $user_message['profile_image_url'];
 	
 
-	$con = new mysqli("localhost","root","miniserver","my_db");
+	$con = new mysqli("localhost","root","","my_db");
 	// 检测连接
     if ($con->connect_error) {
         die("Connection failed: " . $con->connect_error);
@@ -76,7 +76,7 @@ if ($token) {
 		$c = new SaeTClientV2( WB_AKEY , WB_SKEY , $_SESSION['token']['access_token'] );
 							$uid = $_SESSION['uid'];
                             $ms  = $c->user_timeline_by_id($uid);							
-							$f = fopen("log0.txt","w");
+							//$f = fopen("log0.txt","w");
 							
 							$p_list=array();
 							include 'api.php';
@@ -93,7 +93,7 @@ if ($token) {
 								foreach( $keywords as $item ){
 									$key = pack("H*", $item);
 									if($key && $key != 'error'){
-									    fwrite($f, var_export($key, true));
+									    //fwrite($f, var_export($key, true));
 									    $temp_list = get_music_list($key, 5);
 								            $p_list=array_merge($p_list, $temp_list);
 									}
@@ -102,9 +102,9 @@ if ($token) {
 							
 							//$res = split_word($_GET['search']);
 							$p_list=array_unique($p_list);
-							fwrite($f, var_export($p_list, true));
+							//fwrite($f, var_export($p_list, true));
 							setcookie("playlist", json_encode($p_list), time() + 3600);    
-							fclose($f); 
+							//fclose($f); 
 	
 	header("location: http://127.0.0.1/soa/soa_music/index.php");
     	exit;

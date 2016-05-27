@@ -9,7 +9,7 @@
 //include 'list.php';
 error_reporting(E_ERROR);
 include 'api.php';
-$con = new mysqli("localhost","root","miniserver","my_db");
+$con = new mysqli("localhost","root","","my_db");
 
 if (isset($_GET["weibo"]) && isset($_SESSION['token'])){
 	session_start();

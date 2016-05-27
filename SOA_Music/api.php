@@ -50,9 +50,9 @@ function rand_music($player_list)
 	//fwrite($f,var_export($player_list,true));
 	//fclose($f); 
 	//}
-	$f = fopen("log2.txt","w");
+	/*$f = fopen("log2.txt","w");
 	fwrite($f,var_export($player_list,true));
-	fclose($f);
+	fclose($f);*/
     $sum = count($player_list);
     $id = (string)$player_list[rand(0, $sum - 1)];
     return $id;
