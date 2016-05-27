@@ -19,6 +19,7 @@ $code_url = $o->getAuthorizeURL( WB_CALLBACK_URL );
 		 <!-- Bootstrap -->
     <link href="assets/css/bootstrap.css" rel="stylesheet">
 		<link href="assets/css/bootstrap-theme.css" rel="stylesheet">
+		<link rel="stylesheet" href="css/bootstrap-table.css">
 
     <!-- siimple style -->
     <link href="assets/css/style.css" rel="stylesheet">
@@ -114,7 +115,7 @@ $code_url = $o->getAuthorizeURL( WB_CALLBACK_URL );
 					  <!-- slides -->
 					  <div class="carousel-inner" style="margin-top:-30px;">
 						<div class="item active">
-						  <img id="img1" src="assets/img/slide1.png" alt="" title="微博动态推荐音乐">
+						  <img id="img1" src="assets/img/slide1.png" alt="">
 						</div>
 						<div class="item">
 						  <img src="assets/img/slide2.png" alt="">
@@ -125,8 +126,9 @@ $code_url = $o->getAuthorizeURL( WB_CALLBACK_URL );
 					  </div>
 					</div >		
 						
-					<div id="p_list" style="top:-30px;position:absolute;background:#FF0;width:500px;height:450px">
-						<button id="p_back" style="position:absolute;right:0;bottom:0;">
+					<div id="p_list" style="top:-80px;position:absolute;background:#FFF;width:550px;height:545px">
+						<table id="m_list"></table>
+						<button id="p_back" style="position:absolute;left:30px;top:10px;">
 							back
 						</button>
 					</div>
@@ -152,5 +154,6 @@ $code_url = $o->getAuthorizeURL( WB_CALLBACK_URL );
 <script src="js/jquery-1.11.1.min.js" type="text/javascript"></script>
 <script src="js/player.js" type="text/javascript"></script>
 <script src="assets/js/bootstrap.min.js"></script>
+<script src="js/bootstrap-table.js"></script>
 </body>
 </html>

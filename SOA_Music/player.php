@@ -42,6 +42,12 @@ else if (isset($_GET["search"])){
 	    //$player_list[] = "40147552";
 	    setcookie("playlist", json_encode($player_list), time()+3600);
 }
+else if (isset($_GET["mid"])){
+	$player_list = (array)json_decode(str_replace("\\", "", $_COOKIE["playlist"]));
+	$player_list = array_values($player_list);
+	$player_list[] = $_GET["mid"];
+	setcookie("playlist", json_encode($player_list), time()+3600);
+}
 else{
 		if (isset($_COOKIE["playlist"])){
 			 $player_list = (array)json_decode(str_replace("\\", "", $_COOKIE["playlist"]));
@@ -66,7 +72,12 @@ else{
 }
 
 //获取数据
-$id = get_music_id($player_list);
+if (isset($_GET["mid"])){
+	$id = $_GET["mid"];
+}
+else{
+	$id = get_music_id($player_list);
+}
 $music_info = json_decode(get_music_info($id), true);
 $lrc_info = json_decode(get_music_lyric($id), true);
 
