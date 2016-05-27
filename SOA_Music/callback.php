@@ -40,7 +40,7 @@ if ($token) {
     }
 	
 	$sql = "SELECT * FROM users  WHERE weibo_id  =  '".$uid."'";
-	if($con->query($sql)!= null && $con->query($sql)->fetch_row()){
+	if($con->query($sql)!= null && $con->query($sql)->fetch_assoc()){
 		$sql = "UPDATE users SET username = '".$uname."', last_time = now() WHERE weibo_id = '".$uid."'";
 		/*$f = fopen("log.txt","w");
 		fwrite($f, $sql);
@@ -53,7 +53,7 @@ if ($token) {
 	}
 	$con->query($sql);
 	/*$dataArray=array();
-	while($row=$result->fetch_row()){
+	while($row=$result->fetch_assoc()){
 		$dataArray[]=$row;
 	} 
 	print_r($dataArray);

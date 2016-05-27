@@ -2,9 +2,9 @@
 session_start();
 if (isset($_SESSION["uid"])){
 	$uid = $_SESSION["uid"];
-	if (isset($_SESSION['emulate_data'])) {
+	//if (isset($_SESSION['emulate_data'])) {
     //已生成
-	} else {
+	//} else {
 			$list = array();
 			//模拟生成数据，从action数据库中将所有uid为$_SESSION["uid"]，star为1的数据条目取出，取出mid，name，artis，times这几项，写入到list这个array中。
 			$con = new mysqli("localhost","root","","my_db");
@@ -15,18 +15,20 @@ if (isset($_SESSION["uid"])){
 			$sql = "SELECT * FROM actions WHERE user_id  =  '".$uid."' and star = '1'";
 			$res = $con->query($sql);
 			//$f = fopen("log.txt","w");
-	        while($res != null && ($row = $res->fetch_row())){
+	        while($res != null && ($row = $res->fetch_assoc())){
 				//fwrite($f,var_export($row,true));
-				$list[] = array(    "id" => $row[2],
-									"name" => '111',
-									"artist" => '222',
-									"times" => 1,);//$row['times'],);
+				$list[] = array(    "id" => $row['music_id'],
+									"name" => $row['music_name'],
+									"artist" => $row['artist'],
+									"times" => $row['times'],
+								);
 				//array_push($list, $row['music_id']);
 	        }
 			
 			//fwrite($f,var_export($list,true));
 		    //fclose($f);
-			$_SESSION['emulate_data'] = $list;
+			//$_SESSION['emulate_data'] = $list;
+			
 			$con->close();
 			
 			/*for($i = 1; $i < 50; $i ++) {
@@ -42,9 +44,9 @@ if (isset($_SESSION["uid"])){
 			 fwrite($f,var_export($list,true));
 		     fclose($f);
 			$_SESSION['emulate_data'] = $list;*/
-	}
+	//}
 
-	$list_temp = $_SESSION['emulate_data'];
+	$list_temp = $list;//$_SESSION['emulate_data'];
 
 	//排序
 	if (isset($_GET['sort'])) {

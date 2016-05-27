@@ -7,12 +7,11 @@
  */
 
 //include 'list.php';
-error_reporting(E_ERROR);
+//error_reporting(E_ERROR);
 include 'api.php';
-$con = new mysqli("localhost","root","","my_db");
 
+session_start();
 if (isset($_GET["weibo"]) && isset($_SESSION['token'])){
-	session_start();
 
 	include_once( 'config.php' );
 	include_once( 'saetv2.ex.class.php' );
@@ -130,7 +129,43 @@ if (isset($lrc_info["lrc"]["lyric"])) {
 } else {
 		$play_info["lrc"] = "no";
 }
-$con->close();
+
+
+if (isset($_SESSION['uid'])){
+
+    $con = new mysqli("localhost","root","","my_db");
+    if ($con->connect_error) {
+        die("Connection failed: " . $con->connect_error);
+    }
+
+	$uid = $_SESSION['uid'];
+	$sql = "SELECT * FROM actions WHERE user_id  =  '".$uid."' and music_id = '".$id."'";
+    $res = $con->query($sql);
+    if($res!= null && ($row = $res->fetch_assoc())){
+	    if($row['times'] == null){
+		    $times = 1;
+	    }
+	    else{
+		    $times = $row['times'] + 1;
+	    }
+	    $sql = "UPDATE actions SET times = ".$times." WHERE user_id  =  '".$uid."' and music_id = '".$id."'";
+    }
+    else{
+	    $sql = "INSERT INTO actions (music_name, music_id, artist, times, star, user_id) VALUES('".$play_info['music_name']."', '".$id."','".$play_info["artists"]."', 1, 0, '".$uid."')";    
+    }
+    $f = fopen("log.txt","w");
+    fwrite($f, $sql);
+    
+	
+	$con->query($sql);
+	$sql = "SELECT * FROM actions WHERE user_id  =  '".$uid."' and music_id = '".$id."'";
+	$res = $con->query($sql);
+	$row = $res->fetch_assoc();
+	fwrite($f, var_export($row, true));
+	fclose($f);
+	$con->close();
+}
+
 setcookie("playing", json_encode($id), time() + 3600);
 echo json_encode($play_info);
 ?>
