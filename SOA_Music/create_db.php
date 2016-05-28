@@ -32,12 +32,12 @@ $sql = "CREATE TABLE Actions
 (
 id int NOT NULL AUTO_INCREMENT,
 PRIMARY KEY(id),
-musicname varchar(24),
-mid int,
+music_name varchar(100),
+music_id varchar(24),
+artist varchar(100),
 times int,
-star int,
-user_id int,
-foreign key(user_id) references Users(id) on delete cascade on update cascade
+star varcahr(1),
+user_id varchar(24)
 )";
 $con->query($sql);
 
