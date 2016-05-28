@@ -1,6 +1,7 @@
 <?php
 session_start();
 if (isset($_SESSION["uid"]) && isset($_GET["mid"])){
+	$playing = json_decode(str_replace("\\", "", $_COOKIE["playing"]), true);
 	$mid = $_GET["mid"];
 	$uid = $_SESSION["uid"];
 	//action表中uid为uid，mid为mid的项目的star置0
@@ -30,5 +31,11 @@ if (isset($_SESSION["uid"]) && isset($_GET["mid"])){
 	}*/
 	$con->query($sql);
 	$con->close();
+	if ($playing == $mid){
+		echo "1";
+	}
+	else{
+		echo "0";
+	}
 }
 ?>

@@ -40,7 +40,12 @@ window.actionEvents = {
 				btn.attr("src", "images/pause.png");
     },
     'click .remove': function (e, value, row, index) {
-        $.get("remove_star_song.php?mid="+row["id"]);
+        $.get("remove_star_song.php?mid="+row["id"], function (data) {
+					$('#m_list').bootstrapTable('refresh', {silent: true});
+					if (data == "1"){
+						star.attr("src", "images/heart_36.512820512821px_1194482_easyicon.net.png");
+					}
+				});
 		}
 };
 
@@ -137,6 +142,9 @@ $(document).ready(function () {
         } else {
             lrc = "no";
         }
+				if (mp3_info.star == 1) {
+					star.attr("src", "images/Heart_love_16px_1096414_easyicon.net.png");
+				}
     });
     oAudio.volume = 0.5;
 });
@@ -228,6 +236,9 @@ function load_music(mid) {
         } else {
             lrc = "no";
         }
+				if (mp3_info.star == 1) {
+					star.attr("src", "images/Heart_love_16px_1096414_easyicon.net.png");
+				}
     });
 }
 
@@ -265,6 +276,9 @@ function search() {
 					} else {
 							lrc = "no";
 					}
+					if (mp3_info.star == 1) {
+						star.attr("src", "images/Heart_love_16px_1096414_easyicon.net.png");
+					}
 			});
 		}
 }
@@ -272,11 +286,15 @@ function search() {
 function m_star() {
 	if (star.attr("src") != "images/Heart_love_16px_1096414_easyicon.net.png"){
 		star.attr("src", "images/Heart_love_16px_1096414_easyicon.net.png");
-		$.get("mark.php?key=1", function (data) {});
+		$.get("mark.php?key=1", function (data) {
+			$('#m_list').bootstrapTable('refresh', {silent: true});
+		});
 	}
 	else{
 		star.attr("src", "images/heart_36.512820512821px_1194482_easyicon.net.png");
-		$.get("mark.php?key=0", function (data) {});
+		$.get("mark.php?key=0", function (data) {
+			$('#m_list').bootstrapTable('refresh', {silent: true});
+		});
 	}
 }
 

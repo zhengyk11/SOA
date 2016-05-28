@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ERROR);
 session_start();
 if (isset($_SESSION["uid"])){
 	$uid = $_SESSION["uid"];

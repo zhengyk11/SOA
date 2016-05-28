@@ -1,0 +1,9 @@
+INSERT INTO actions (music_name, music_id, artist, times, star, user_id) VALUES('자리', '5292986','Andup,김박첼라', 1, 0, '3672641592')array (
+  'id' => '6',
+  'music_name' => '자리',
+  'music_id' => '5292986',
+  'artist' => 'Andup,김박첼라',
+  'times' => '1',
+  'star' => '0',
+  'user_id' => '3672641592',
+)

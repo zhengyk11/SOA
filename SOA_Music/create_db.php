@@ -36,7 +36,7 @@ music_name varchar(100),
 music_id varchar(24),
 artist varchar(100),
 times int,
-star varcahr(1),
+star varchar(1),
 user_id varchar(24)
 )";
 $con->query($sql);

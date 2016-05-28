@@ -7,7 +7,7 @@
  */
 
 //include 'list.php';
-//error_reporting(E_ERROR);
+error_reporting(E_ERROR);
 include 'api.php';
 
 session_start();
@@ -129,6 +129,7 @@ if (isset($lrc_info["lrc"]["lyric"])) {
 } else {
 		$play_info["lrc"] = "no";
 }
+$play_info['star'] = 0;
 
 
 if (isset($_SESSION['uid'])){
@@ -149,6 +150,9 @@ if (isset($_SESSION['uid'])){
 		    $times = $row['times'] + 1;
 	    }
 	    $sql = "UPDATE actions SET times = ".$times." WHERE user_id  =  '".$uid."' and music_id = '".$id."'";
+			if ($row['star'] == '1'){
+				$play_info['star'] = 1;
+			}
     }
     else{
 	    $sql = "INSERT INTO actions (music_name, music_id, artist, times, star, user_id) VALUES('".$play_info['music_name']."', '".$id."','".$play_info["artists"]."', 1, 0, '".$uid."')";    
