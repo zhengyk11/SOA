@@ -152,7 +152,7 @@ function get_music_list($input, $limit = 100){
         $song_record = $song_json['songs'][0]['popularity'];
         $song_type = gettype($song_record);
         if ($song_record > $threshold){
-            array_push($new_music_id, $song_record);
+            array_push($new_music_id, $new_id);
 //            $f = fopen("d:/log.txt","w");
 //            fwrite($f,var_export($song_type,true));
 //            fwrite($f,var_export($song_record,true));
