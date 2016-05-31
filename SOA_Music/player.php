@@ -11,18 +11,37 @@ error_reporting(E_ERROR);
 include 'api.php';
 
 session_start();
-if (isset($_GET["weibo"]) && isset($_SESSION['token'])){
-
+if (isset($_GET["weibo"]) && isset($_SESSION['token']) && isset($_SESSION['uid'])){
 	include_once( 'config.php' );
 	include_once( 'saetv2.ex.class.php' );
-
 	$c = new SaeTClientV2( WB_AKEY , WB_SKEY , $_SESSION['token']['access_token'] );
-	$uid_get = $c->get_uid();
-	$uid = $uid_get['uid'];
-	$weibos = $c->user_timeline_by_id($uid);
-	//$f = fopen("c:/users/jie/desktop/log.txt","w");
-	//	fwrite($f,var_export($weibos[statuses][0]['text'],true));
-	//	fclose($f);
+	$uid = $_SESSION['uid'];
+	$ms  = $c->user_timeline_by_id($uid);							
+	$player_list=array();
+	foreach( $ms['statuses'] as $item ){
+		
+		$context = $item['text'];
+		//fwrite($f, $context);
+		$res = split_word($context, 0.8, 0);
+		//fwrite($f, $context.' ');
+		$keywords = explode('0d0a', bin2hex($res).'');
+		//fwrite($f, $keywords.' ');
+		//fwrite($f, pack("H*", bin2hex($res)).' ');
+		foreach( $keywords as $item ){
+			$key = pack("H*", $item);
+			if($key && $key != 'error'){
+					//fwrite($f, var_export($key, true));
+					$temp_list = get_music_list($key, 5);
+								$player_list=array_merge($player_list, $temp_list);
+			}
+		}
+	}
+	
+	//$res = split_word($_GET['search']);
+	$player_list=array_unique($player_list);
+	//fwrite($f, var_export($p_list, true));
+	setcookie("playlist", json_encode($player_list), time() + 3600);    
+	//fclose($f); 
 }
 else if (isset($_GET["search"])){
 	    //setcookie("playlist", "", time()-3600);
@@ -32,7 +51,8 @@ else if (isset($_GET["search"])){
 		fclose($f); */
         //$jt_record = json_encode($res);
         //echo $jt_record;
-		global $player_list;
+		//global $player_list;
+		$player_list=array();
 		if($res && strstr($res, 'error') == false)
 			$player_list = get_music_list($res, 20);
         //$jt_record = json_encode($player_list);

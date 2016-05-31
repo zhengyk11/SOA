@@ -14,7 +14,7 @@ $code_url = $o->getAuthorizeURL( WB_CALLBACK_URL );
     <meta name="description" content="">
     <meta name="author" content="">
 		<link rel="shortcut icon" href="assets/img/favicon.png">
-    <title>SOA Music</title>
+    <title>Musicoon</title>
 		
 		 <!-- Bootstrap -->
     <link href="assets/css/bootstrap.css" rel="stylesheet">
@@ -28,8 +28,7 @@ $code_url = $o->getAuthorizeURL( WB_CALLBACK_URL );
 		<link rel="stylesheet" href="css/speech-input.css">
 		<link rel="stylesheet" href="css/gh-buttons.css">
 </head>
-<body>
-
+<body scroll="no">
 		<div class="navbar navbar-inverse navbar-fixed-top" style="background: #333;">
       <div class="container" >
         <div class="navbar-header" >
@@ -38,7 +37,7 @@ $code_url = $o->getAuthorizeURL( WB_CALLBACK_URL );
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">SOA</a>
+          <a class="navbar-brand" href="#">Musicoon</a>
         </div>
         <div class="navbar-collapse collapse" style="background: #333;">
 					
@@ -57,7 +56,17 @@ $code_url = $o->getAuthorizeURL( WB_CALLBACK_URL );
 						<?php
 						if (isset($_SESSION['uid'])){
 							echo '<li><a href="logout.php">Logout</a></li>';
-							echo '<li><img style="padding-left:10px;" href="#" title="' . $_SESSION['uname'] . '" src="' . $_SESSION['uphoto'] .'"  alt="头像" /></li>';
+							echo '<li class="dropdown">
+											<a class="dropdown-toggle" data-toggle="dropdown" style="padding:0;">
+												<img style="padding:0;" href="#" title="' . $_SESSION['uname'] . '" src="' . $_SESSION['uphoto'] .'"  alt="头像" />
+												<b class="caret"></b>
+											</a>
+											<ul class="dropdown-menu">
+												<li><a href="javascript:weibo_listen()">微博听歌</a></li>
+												<li><a href="javascript:show_list()">收藏歌曲</a></li>
+												<li><a href="#">其他</a></li>
+											</ul>
+										</li>';
 							
 						}
 						else{
@@ -79,8 +88,6 @@ $code_url = $o->getAuthorizeURL( WB_CALLBACK_URL );
 
 	<div id="header">
 		<div class="container">
-			<div class="row">
-				<div class="col-lg-6">
 					<div class="container1">
 							<div class="player1">
 									<div id="cd" class="cd">
@@ -104,38 +111,9 @@ $code_url = $o->getAuthorizeURL( WB_CALLBACK_URL );
 									</div>
 							</div>
 					</div>					
-				</div>
-				<div class="col-lg-4 col-lg-offset-1">
-					<div id="carousel-example-generic" style="position:absolute;margin-left:100px;" class="carousel slide" data-ride="carousel">
-					  <ol class="carousel-indicators">
-						<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-						<li data-target="#carousel-example-generic" data-slide-to="1"></li>
-						<li data-target="#carousel-example-generic" data-slide-to="2"></li>
-					  </ol>					
-					  <!-- slides -->
-					  <div class="carousel-inner" style="margin-top:-30px;">
-						<div class="item active">
-						  <img id="img1" src="assets/img/slide1.png" alt="">
-						</div>
-						<div class="item">
-						  <img src="assets/img/slide2.png" alt="">
-						</div>
-						<div class="item">
-						  <img src="assets/img/slide3.png" alt="">
-						</div>
-					  </div>
-					</div >		
-						
-					<div id="p_list" style="top:-80px;position:absolute;background:#FFF;width:550px;height:545px">
-						<table id="m_list"></table>
-						<button id="p_back" style="position:absolute;left:30px;top:10px;">
-							back
-						</button>
-					</div>
-				</div>
 				
 			</div>
-		</div>
+		
 	</div>
 	<audio id="player">
 </audio>
@@ -143,11 +121,37 @@ $code_url = $o->getAuthorizeURL( WB_CALLBACK_URL );
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-6 col-lg-offset-3">
-					<p class="copyright">Copyright &copy; 2016 - THUCST</p>
+					<p class="copyright">Copyright &copy; 2016</p>
 			</div>
 		</div>		
 	</div>	
 	</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" 
+   aria-labelledby="myModalLabel" aria-hidden="true" style="height:95%;overflow: auto !important;">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" 
+               aria-hidden="true">×
+            </button>
+            <h4 class="modal-title" id="myModalLabel">
+               收藏歌曲
+            </h4>
+         </div>
+         <div class="modal-body">
+						<table id="m_list"></table>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" 
+               data-dismiss="modal">关闭
+            </button>
+         </div>
+      </div><!-- /.modal-content -->
+   </div><!-- /.modal-dialog -->
+</div>
+
+<div id="over" class="over"></div>
+<div id="layout" class="layout"><img src="images/o_31.gif"/></div>
 		
 
 <script src="js/speech-input.js"></script>

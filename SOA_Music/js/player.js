@@ -11,11 +11,7 @@ cd = $("#cd");
 lrc_row = $("#lrc");
 s_button = $("#s_button")
 input = $("#t_input")
-img1 = $("#img1")
 star = $("#star")
-p_list=$("#p_list")
-ppt=$("#carousel-example-generic")
-p_back=$("#p_back")
 
 function actionFormatter(value, row, index) {
     return [
@@ -30,14 +26,14 @@ function actionFormatter(value, row, index) {
 
 window.actionEvents = {
     'click .play': function (e, value, row, index) {
+				$('#myModal').modal('hide');
 				oAudio.pause();
 				album.removeClass("roll");
 				inn.removeClass("roll");
 				if (!oAudio.paused && lrc != "no") {
 						clearInterval(lrc_interval);
 				}
-				load_music(row["id"]);
-				btn.attr("src", "images/pause.png");
+				load_music("player.php?mid=" + row["id"]);
     },
     'click .remove': function (e, value, row, index) {
         $.get("remove_star_song.php?mid="+row["id"], function (data) {
@@ -129,7 +125,6 @@ var ButtonInit = function () {
 };
 
 $(document).ready(function () {
-		p_list.css("display", "none");
     cd_size();
     $.get("player.php?_=" + (new Date()).getTime(), function (data) {
         mp3_info = JSON.parse(data);
@@ -144,6 +139,9 @@ $(document).ready(function () {
         }
 				if (mp3_info.star == 1) {
 					star.attr("src", "images/Heart_love_16px_1096414_easyicon.net.png");
+				}
+				else{
+					star.attr("src", "images/heart_36.512820512821px_1194482_easyicon.net.png");
 				}
     });
     oAudio.volume = 0.5;
@@ -167,21 +165,15 @@ $('#t_input').bind('keypress',function(event){
 		}
 });
 
-$("#img1").bind("click",function(){
-	ppt.css("display", "none");
-	p_list.css("display", "block");
+function show_list() {
+	$('#myModal').modal('show');
 	//1.初始化Table
   var oTable = new TableInit();
   oTable.Init();
   //2.初始化Button的点击事件
   var oButtonInit = new ButtonInit();
   oButtonInit.Init();
-});
-
-$("#p_back").bind("click",function(){
-	ppt.css("display", "block");
-	p_list.css("display", "none");
-});
+}
 
 function m_play() {
     if (oAudio.paused) {
@@ -211,16 +203,29 @@ function next_music() {
     if (!oAudio.paused && lrc != "no") {
         clearInterval(lrc_interval);
     }
-    load_music("");
+    load_music("player.php?_=" + (new Date()).getTime());
     btn.attr("src", "images/pause.png");
 }
 
-function load_music(mid) {
-		if (mid == "")
-			str = "player.php?_=" + (new Date()).getTime();
-		else
-			str = "player.php?mid=" + mid;
+function weibo_listen() {
+	if (!oAudio.paused){
+		oAudio.pause();
+		btn.attr("src", "images/play.png");
+	}
+	album.removeClass("roll");
+	inn.removeClass("roll");
+	if (!oAudio.paused && lrc != "no") {
+			clearInterval(lrc_interval);
+	}
+	load_music("player.php?weibo=1");
+}
+
+function load_music(str) {
+		$("#over").toggle();
+		$("#layout").toggle();
     $.get(str, function (data) {
+				$("#over").toggle();
+				$("#layout").toggle();
         mp3_info = JSON.parse(data);
         $("#player").attr("src", mp3_info.mp3);
         album.css("background-image", "url('" + mp3_info.cover + "')");
@@ -239,6 +244,12 @@ function load_music(mid) {
 				if (mp3_info.star == 1) {
 					star.attr("src", "images/Heart_love_16px_1096414_easyicon.net.png");
 				}
+				else{
+					star.attr("src", "images/heart_36.512820512821px_1194482_easyicon.net.png");
+				}
+				btn.attr("src", "images/pause.png");
+				$('#m_list').bootstrapTable('refresh', {silent: true});
+				
     });
 }
 
@@ -258,7 +269,11 @@ function display_lrc() {
 
 function search() {
 		if (input.val() != ""){
+			$("#over").toggle();
+			$("#layout").toggle();
 			$.get("player.php?search=" + input.val(), function (data) {
+					$("#over").toggle();
+					$("#layout").toggle();
 					input.val("")
 					mp3_info = JSON.parse(data);
 					$("#player").attr("src", mp3_info.mp3);
@@ -279,6 +294,10 @@ function search() {
 					if (mp3_info.star == 1) {
 						star.attr("src", "images/Heart_love_16px_1096414_easyicon.net.png");
 					}
+					else{
+						star.attr("src", "images/heart_36.512820512821px_1194482_easyicon.net.png");
+					}
+					$('#m_list').bootstrapTable('refresh', {silent: true});
 			});
 		}
 }
