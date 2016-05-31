@@ -114,15 +114,20 @@ function get_music_list($input, $limit = 100){
     $url= "http://music.163.com/api/search/get/web?csrf_token=";
     $s = $input;
     //$limit = 100;
+    $threshold = 40;
     $music_id = array();
-    
+    $new_music_id = array();
     if(!$s||!$limit){
         $tempArr = array("code"=>-1,"msg"=>"输入参数有误！");
         echo  json_encode($tempArr);
     }else{
         $result = curl($url,$s,$limit);
+/*        $f = fopen("d:/log.txt","w");
+		fwrite($f,var_export($result,true));
+		fclose($f); */
         $de_json = json_decode($result,TRUE);
         $dt_record = $de_json['result']['songs'];
+        
         $count_json = count($dt_record);
         for ($i = 0; $i < $count_json; $i++){
             $message =  $dt_record[$i]['id'];
@@ -132,7 +137,33 @@ function get_music_list($input, $limit = 100){
     //    echo $count_json;
         //echo $jt_record;
     }
-    return $music_id;
+    $count_id = count($music_id);
+    header("Content-type:text/html;charset=utf-8");
+    for ($i = 0; $i < $count_id; $i++){
+        $new_id = $music_id[$i];
+//        $new_id = "412319666";
+        $new_url= "http://music.163.com/api/song/detail/?id=";
+        $left = "&ids=[";
+        $right = "]";
+        $final_url = $new_url."".$new_id."".$left."".$new_id."".$right;
+        $new_result = curl($final_url);
+        $song = $new_result['songs'];
+        $song_json = json_decode($new_result,TRUE);
+        $song_record = $song_json['songs'][0]['popularity'];
+        $song_type = gettype($song_record);
+        if ($song_record > $threshold){
+            array_push($new_music_id, $song_record);
+//            $f = fopen("d:/log.txt","w");
+//            fwrite($f,var_export($song_type,true));
+//            fwrite($f,var_export($song_record,true));
+//            fwrite($f,var_export($new_result, true));
+//            fclose($f);
+        }
+    }   
+//    $f = fopen("d:/log.txt","w");
+//	fwrite($f,var_export($count_id,true));
+//    fclose($f);        
+    return $new_music_id;
 }
 
 function split_word($input, $p1 = 0.8, $p2 = 0) {
