@@ -31,7 +31,7 @@ if (isset($_GET["weibo"]) && isset($_SESSION['token']) && isset($_SESSION['uid']
 			$key = pack("H*", $item);
 			if($key && $key != 'error'){
 					//fwrite($f, var_export($key, true));
-					$temp_list = get_music_list($key, 20);
+					$temp_list = get_music_list($key);
 								$player_list=array_merge($player_list, $temp_list);
 			}
 		}
@@ -54,7 +54,7 @@ else if (isset($_GET["search"])){
 		//global $player_list;
 		$player_list=array();
 		if($res && strstr($res, 'error') == false)
-			$player_list = get_music_list($res, 20);
+			$player_list = get_music_list($res);
         //$jt_record = json_encode($player_list);
         //echo $jt_record;
 	    //$player_list = array();
