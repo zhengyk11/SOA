@@ -14,7 +14,7 @@ $code_url = $o->getAuthorizeURL( WB_CALLBACK_URL );
     <meta name="description" content="">
     <meta name="author" content="">
 		<link rel="shortcut icon" href="assets/img/favicon.png">
-    <title>Musicoon</title>
+    <title>Musicooon</title>
 		
 		 <!-- Bootstrap -->
     <link href="assets/css/bootstrap.css" rel="stylesheet">
@@ -37,7 +37,7 @@ $code_url = $o->getAuthorizeURL( WB_CALLBACK_URL );
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Musicoon</a>
+          <a class="navbar-brand" href="#">Musicooon</a>
         </div>
         <div class="navbar-collapse collapse" style="background: #333;">
 					
@@ -117,15 +117,6 @@ $code_url = $o->getAuthorizeURL( WB_CALLBACK_URL );
 	</div>
 	<audio id="player">
 </audio>
-	<div id="footer">
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-6 col-lg-offset-3">
-					<p class="copyright">Copyright &copy; 2016</p>
-			</div>
-		</div>		
-	</div>	
-	</div>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" 
    aria-labelledby="myModalLabel" aria-hidden="true" style="height:95%;overflow: auto !important;">
    <div class="modal-dialog">
