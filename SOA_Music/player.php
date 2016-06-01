@@ -31,7 +31,7 @@ if (isset($_GET["weibo"]) && isset($_SESSION['token']) && isset($_SESSION['uid']
 			$key = pack("H*", $item);
 			if($key && $key != 'error'){
 					//fwrite($f, var_export($key, true));
-					$temp_list = get_music_list($key, 5);
+					$temp_list = get_music_list($key, 20);
 								$player_list=array_merge($player_list, $temp_list);
 			}
 		}
