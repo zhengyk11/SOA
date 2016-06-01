@@ -1,9 +1,9 @@
-UPDATE actions SET times = 4 WHERE user_id  =  '3672641592' and music_id = '5271359'array (
-  'id' => '66',
-  'music_name' => '钢铁是怎样没有炼成的',
-  'music_id' => '5271359',
-  'artist' => '木推瓜',
-  'times' => '4',
+UPDATE actions SET times = 3 WHERE user_id  =  '3672641592' and music_id = '26418242'array (
+  'id' => '38',
+  'music_name' => '귀요미송',
+  'music_id' => '26418242',
+  'artist' => 'Hari',
+  'times' => '3',
   'star' => '0',
   'user_id' => '3672641592',
 )
