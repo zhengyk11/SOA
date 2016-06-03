@@ -5,11 +5,16 @@ session_start();
 include_once( 'config.php' );
 include_once( 'saetv2.ex.class.php' );
 
+$f = fopen("log.txt","w");
+fwrite($f, "get in callback.php\n");
+		
+
 $o = new SaeTOAuthV2( WB_AKEY , WB_SKEY );
 
 date_default_timezone_set('Asia/Shanghai');
 
 if (isset($_REQUEST['code'])) {
+	fwrite($f, "$_REQUEST['code']\n");
 	$keys = array();
 	$keys['code'] = $_REQUEST['code'];
 	$keys['redirect_uri'] = WB_CALLBACK_URL;
@@ -18,14 +23,17 @@ if (isset($_REQUEST['code'])) {
 	} catch (OAuthException $e) {
 	}
 }
+fwrite($f, "$_REQUEST['code'] done\n");
 
 if ($token) {
+	fwrite($f, "$token\n");
 	$_SESSION['token'] = $token;
 	setcookie( 'weibojs_'.$o->client_id, http_build_query($token) );
 	$c = new SaeTClientV2( WB_AKEY , WB_SKEY , $_SESSION['token']['access_token'] );
 	
 	$uid_get = $c->get_uid();
     $uid = $uid_get['uid'];
+    fwrite($f, $uid.'\n');
 	$user_message = $c->show_user_by_id($uid);//根据ID获取用户等基本信息
 	$uname = $user_message['screen_name'];
 	$_SESSION['uid'] = $uid;
@@ -38,7 +46,7 @@ if ($token) {
     if ($con->connect_error) {
         die("Connection failed: " . $con->connect_error);
     }
-	
+	fwrite($f, '$con create successfully\n');
 	$sql = "SELECT * FROM users  WHERE weibo_id  =  '".$uid."'";
 	if($con->query($sql)!= null && $con->query($sql)->fetch_assoc()){
 		$sql = "UPDATE users SET username = '".$uname."', last_time = now() WHERE weibo_id = '".$uid."'";
@@ -51,7 +59,9 @@ if ($token) {
 		fwrite($f, $sql);
 		fclose($f);*/
 	}
+	fwrite($f, '$con query start\n');
 	$con->query($sql);
+	fwrite($f, '$con query done\n');
 	/*$dataArray=array();
 	while($row=$result->fetch_assoc()){
 		$dataArray[]=$row;
@@ -73,8 +83,10 @@ if ($token) {
 	fclose($f);*/
     $con->close();
 	header("location: http://thu02.chinacloudapp.cn/SOA_Music/index.php");
-    	exit;
+	fclose($f);
+    exit;
 } else {
+	fclose($f);
     	echo "授权失败。";
 }
 ?>
