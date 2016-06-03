@@ -14,7 +14,7 @@ $o = new SaeTOAuthV2( WB_AKEY , WB_SKEY );
 date_default_timezone_set('Asia/Shanghai');
 
 if (isset($_REQUEST['code'])) {
-	fwrite($f, "$_REQUEST['code']\n");
+	fwrite($f, "$_REQUEST\n");
 	$keys = array();
 	$keys['code'] = $_REQUEST['code'];
 	$keys['redirect_uri'] = WB_CALLBACK_URL;
@@ -23,7 +23,7 @@ if (isset($_REQUEST['code'])) {
 	} catch (OAuthException $e) {
 	}
 }
-fwrite($f, "$_REQUEST['code'] done\n");
+fwrite($f, "$_REQUEST done\n");
 
 if ($token) {
 	fwrite($f, "$token\n");
@@ -48,16 +48,18 @@ if ($token) {
     }
 	fwrite($f, '$con create successfully\n');
 	$sql = "SELECT * FROM users  WHERE weibo_id  =  '".$uid."'";
-	if($con->query($sql)!= null && $con->query($sql)->fetch_assoc()){
+	$res = $con->query($sql);
+
+	if($res!= null && $res->fetch_assoc()){
 		$sql = "UPDATE users SET username = '".$uname."', last_time = now() WHERE weibo_id = '".$uid."'";
-		/*$f = fopen("log.txt","w");
-		fwrite($f, $sql);
-		fclose($f);*/
+		//$f = fopen("log.txt","w");
+		fwrite($f, $sql.'\n');
+		//fclose($f);
 	}else{
 		$sql = "INSERT INTO users (weibo_id, username, last_time) VALUES('".$uid."','".$uname."', now())";
-		/*$f = fopen("log.txt","w");
-		fwrite($f, $sql);
-		fclose($f);*/
+		//$f = fopen("log.txt","w");
+		fwrite($f, $sql.'\n');
+		//fclose($f);
 	}
 	fwrite($f, '$con query start\n');
 	$con->query($sql);
