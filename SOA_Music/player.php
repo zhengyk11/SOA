@@ -22,7 +22,7 @@ if (isset($_GET["weibo"]) && isset($_SESSION['token']) && isset($_SESSION['uid']
 		
 		$context = $item['text'];
 		//fwrite($f, $context);
-		$res = split_word($context, 0.8, 0);
+		$res = split_word($context, 0.7, 0);
 		//fwrite($f, $context.' ');
 		$keywords = explode('0d0a', bin2hex($res).'');
 		//fwrite($f, $keywords.' ');
@@ -31,7 +31,7 @@ if (isset($_GET["weibo"]) && isset($_SESSION['token']) && isset($_SESSION['uid']
 			$key = pack("H*", $item);
 			if($key && $key != 'error'){
 					//fwrite($f, var_export($key, true));
-					$temp_list = get_music_list($key);
+					$temp_list = get_music_list($key,5);
 								$player_list=array_merge($player_list, $temp_list);
 			}
 		}
@@ -54,7 +54,7 @@ else if (isset($_GET["search"])){
 		//global $player_list;
 		$player_list=array();
 		if($res && strstr($res, 'error') == false)
-			$player_list = get_music_list($res);
+			$player_list = get_music_list($res, 20);
         //$jt_record = json_encode($player_list);
         //echo $jt_record;
 	    //$player_list = array();
@@ -177,16 +177,16 @@ if (isset($_SESSION['uid'])){
     else{
 	    $sql = "INSERT INTO actions (music_name, music_id, artist, times, star, user_id) VALUES('".$play_info['music_name']."', '".$id."','".$play_info["artists"]."', 1, 0, '".$uid."')";    
     }
-    $f = fopen("log.txt","w");
-    fwrite($f, $sql);
+    //$f = fopen("log.txt","w");
+    //fwrite($f, $sql);
     
 	
 	$con->query($sql);
-	$sql = "SELECT * FROM actions WHERE user_id  =  '".$uid."' and music_id = '".$id."'";
-	$res = $con->query($sql);
-	$row = $res->fetch_assoc();
-	fwrite($f, var_export($row, true));
-	fclose($f);
+	//$sql = "SELECT * FROM actions WHERE user_id  =  '".$uid."' and music_id = '".$id."'";
+	//$res = $con->query($sql);
+	//$row = $res->fetch_assoc();
+	//fwrite($f, var_export($row, true));
+	//fclose($f);
 	$con->close();
 }
 

@@ -114,7 +114,7 @@ function get_music_list($input, $limit = 100){
     $url= "http://music.163.com/api/search/get/web?csrf_token=";
     $s = $input;
     //$limit = 100;
-    $threshold = 40;
+    $threshold = 75;
     $music_id = array();
     $new_music_id = array();
     if(!$s||!$limit){
@@ -151,7 +151,7 @@ function get_music_list($input, $limit = 100){
         $song_json = json_decode($new_result,TRUE);
         $song_record = $song_json['songs'][0]['popularity'];
         $song_type = gettype($song_record);
-        if ($song_record > $threshold){
+        if ($song_record >= $threshold){
             array_push($new_music_id, $new_id);
 //            $f = fopen("d:/log.txt","w");
 //            fwrite($f,var_export($song_type,true));
