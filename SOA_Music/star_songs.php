@@ -8,7 +8,7 @@ if (isset($_SESSION["uid"])){
 	//} else {
 			$list = array();
 			//模拟生成数据，从action数据库中将所有uid为$_SESSION["uid"]，star为1的数据条目取出，取出mid，name，artis，times这几项，写入到list这个array中。
-			$con = new mysqli("localhost","root","","my_db");
+			$con = new mysqli("localhost","root","root","my_db");
 	        // 检测连接
             if ($con->connect_error) {
                 die("Connection failed: " . $con->connect_error);

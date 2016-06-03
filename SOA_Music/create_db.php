@@ -1,6 +1,6 @@
 <?php
 // 创建连接
-$con = new mysqli("localhost","root","");
+$con = new mysqli("localhost","root","root");
 // 检测连接
 if ($con->connect_error) {
     die("Connection failed: " . $con->connect_error);
@@ -14,7 +14,7 @@ if ($con->query($sql) === TRUE) {
     echo "Error creating database: " . $con->error;
 }
 
-$con = new mysqli("localhost","root","","my_db");
+$con = new mysqli("localhost","root","root","my_db");
 $sql = "CREATE TABLE Users 
 (
 id int NOT NULL AUTO_INCREMENT,

@@ -154,7 +154,7 @@ $play_info['star'] = 0;
 
 if (isset($_SESSION['uid'])){
 
-    $con = new mysqli("localhost","root","","my_db");
+    $con = new mysqli("localhost","root","root","my_db");
     if ($con->connect_error) {
         die("Connection failed: " . $con->connect_error);
     }
@@ -177,16 +177,16 @@ if (isset($_SESSION['uid'])){
     else{
 	    $sql = "INSERT INTO actions (music_name, music_id, artist, times, star, user_id) VALUES('".$play_info['music_name']."', '".$id."','".$play_info["artists"]."', 1, 0, '".$uid."')";    
     }
-    $f = fopen("log.txt","w");
-    fwrite($f, $sql);
+    //$f = fopen("log.txt","w");
+    //fwrite($f, $sql);
     
 	
 	$con->query($sql);
-	$sql = "SELECT * FROM actions WHERE user_id  =  '".$uid."' and music_id = '".$id."'";
-	$res = $con->query($sql);
-	$row = $res->fetch_assoc();
-	fwrite($f, var_export($row, true));
-	fclose($f);
+	//$sql = "SELECT * FROM actions WHERE user_id  =  '".$uid."' and music_id = '".$id."'";
+	//$res = $con->query($sql);
+	//$row = $res->fetch_assoc();
+	//fwrite($f, var_export($row, true));
+	//fclose($f);
 	$con->close();
 }
 

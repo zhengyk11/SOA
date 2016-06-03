@@ -9,7 +9,7 @@ if (isset($_SESSION["uid"]) && isset($_GET["mid"])){
 	//	fwrite($f,var_export($mid,true));
 	//	fwrite($f,var_export($uid,true));
 	//	fclose($f);
-	$con = new mysqli("localhost","root","","my_db");
+	$con = new mysqli("localhost","root","root","my_db");
     if ($con->connect_error) {
         die("Connection failed: " . $con->connect_error);
     }

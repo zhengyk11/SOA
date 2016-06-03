@@ -4,7 +4,7 @@ if (isset($_COOKIE["playing"]) && isset($_GET["key"]) && isset($_SESSION["uid"])
 	$mid = json_decode(str_replace("\\", "", $_COOKIE["playing"]), true);
 	$key = $_GET["key"];
 	$uid = $_SESSION["uid"];
-	$con = new mysqli("localhost","root","","my_db");
+	$con = new mysqli("localhost","root","root","my_db");
 	// 检测连接
     if ($con->connect_error) {
         die("Connection failed: " . $con->connect_error);

@@ -33,7 +33,7 @@ if ($token) {
 	$_SESSION['uphoto'] = $user_message['profile_image_url'];
 	
 
-	$con = new mysqli("localhost","root","","my_db");
+	$con = new mysqli("localhost","root","root","my_db");
 	// 检测连接
     if ($con->connect_error) {
         die("Connection failed: " . $con->connect_error);
@@ -72,7 +72,7 @@ if ($token) {
 	fwrite($f,var_export('20'.date('y-m-d h:i:s', time()),true));
 	fclose($f);*/
     $con->close();
-	header("location: http://127.0.0.1/soa/soa_music/index.php");
+	header("location: http://thu02.chinacloudapp.cn/SOA_Music/index.php");
     	exit;
 } else {
     	echo "授权失败。";
